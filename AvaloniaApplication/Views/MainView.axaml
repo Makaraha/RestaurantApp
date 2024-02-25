@@ -5,10 +5,11 @@
              xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
 			 xmlns:orders="clr-namespace:AvaloniaApplication.Views.Tabs.Orders"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="AvaloniaApplication.Views.MainView">
+             x:Class="AvaloniaApplication.Views.MainView"
+			 x:DataType="vm:MainViewModel">
 	<TabControl>
-		<TabItem Header="Orders">
-			<orders:OrdersView />
+		<TabItem x:Name="OrdersTab" Header="Orders">
+			<orders:OrdersView DataContext="{Binding OrdersViewModel}" />
 		</TabItem>
 
 		<TabItem Header="Dishes">

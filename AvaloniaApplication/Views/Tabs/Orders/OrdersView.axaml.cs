@@ -1,5 +1,4 @@
 using Avalonia.Controls;
-using AvaloniaApplication.ViewModels.Tabs.Orders;
 
 namespace AvaloniaApplication.Views.Tabs.Orders
 {
@@ -7,7 +6,6 @@ namespace AvaloniaApplication.Views.Tabs.Orders
     {
         public OrdersView()
         {
-            DataContext = new OrdersViewModel();
             InitializeComponent();
         }
     }

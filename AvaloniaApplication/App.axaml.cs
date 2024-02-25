@@ -1,14 +1,33 @@
-﻿using Avalonia;
+﻿using System;
+using System.Reflection;
+using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaApplication.Views;
+using Infrastructure;
+using MediatR;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace AvaloniaApplication;
 
 public partial class App : Application
 {
+    private IServiceProvider _services;
+
     public override void Initialize()
     {
+        var builder = Host.CreateApplicationBuilder();
+
+        builder.Configuration.AddJsonFile("appsettings.json");
+
+        builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+        builder.Services.AddRepositories(builder.Configuration);
+        builder.Services.AddViewModels();
+        builder.Services.AddViews();
+
+        _services = builder.Services.BuildServiceProvider();
 
         AvaloniaXamlLoader.Load(this);
     }
@@ -17,17 +36,8 @@ public partial class App : Application
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            desktop.MainWindow = new MainWindow
-            {
-                //DataContext = new MainViewModel()
-            };
-        }
-        else if (ApplicationLifetime is ISingleViewApplicationLifetime singleViewPlatform)
-        {
-            singleViewPlatform.MainView = new MainView
-            {
-                //DataContext = new MainViewModel()
-            };
+            using var scope = _services.CreateScope();
+            desktop.MainWindow = scope.ServiceProvider.GetRequiredService<MainWindow>();
         }
 
         base.OnFrameworkInitializationCompleted();

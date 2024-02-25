@@ -1,15 +1,18 @@
 using System;
 using System.Collections.ObjectModel;
 using Domain;
+using MediatR;
 using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.Tabs.Orders
 {
     public class OrdersViewModel : ReactiveObject
 	{
-		public OrdersViewModel()
+        private IMediator _mediator;
+
+		public OrdersViewModel(IMediator mediator)
 		{
-           
+           _mediator = mediator;
 		}
 
 		public ObservableCollection<OrderViewModel> Orders => new ObservableCollection<OrderViewModel>
