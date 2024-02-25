@@ -1,8 +1,6 @@
 ﻿using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
-
-using AvaloniaApplication.ViewModels;
 using AvaloniaApplication.Views;
 
 namespace AvaloniaApplication;
