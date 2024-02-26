@@ -13,6 +13,16 @@ namespace Infrastructure.Sql
             _commandProvider = commandProvider;
         }
 
+        public async Task<int> ExecuteScalarAsync(string script)
+        {
+            using var command = await _commandProvider.GetSqlCommandAsync(script);
+            var scalar =  await command.ExecuteScalarAsync();
+            if (scalar == null)
+                return default;
+
+            return int.Parse(scalar.ToString());
+        }
+
         public async Task<int> ExecuteNonQueryAsync(string script)
         {
             using var command = await _commandProvider.GetSqlCommandAsync(script);

@@ -5,6 +5,13 @@ namespace Infrastructure.Sql
 {
     public class SqlScriptGenerator
     {
+        public string LastIdScript<T>()
+        {
+            var type = typeof(T);
+            var tableName = ExtractTableName(type);
+            return $"SELECT IDENT_CURRENT('{tableName}')";
+        }
+
         public string SelectScript<T>()
         {
             var type = typeof(T);
@@ -18,7 +25,7 @@ namespace Infrastructure.Sql
         {
             var type = entity.GetType();
             var tableName = ExtractTableName(type);
-            var fields = ExtractFields(type)
+            var fields = ExtractFields(entity)
                 .Where(x => !x.IsPrimaryKey)
                 .ToList(); 
 

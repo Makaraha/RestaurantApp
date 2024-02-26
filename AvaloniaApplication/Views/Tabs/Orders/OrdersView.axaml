@@ -5,7 +5,6 @@
 			 xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels.Tabs.Orders"
 			 xmlns:views="clr-namespace:AvaloniaApplication.Views.Tabs.Orders"
 			 xmlns:reuse="clr-namespace:AvaloniaApplication.Controls.Reusables"
-			 xmlns:order="clr-namespace:AvaloniaApplication.Controls.Orders"
              xmlns:data="clr-namespace:Domain;assembly=Domain"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.Tabs.Orders.OrdersView"

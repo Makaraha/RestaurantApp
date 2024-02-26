@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Application;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -12,7 +13,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace AvaloniaApplication;
 
-public partial class App : Application
+public partial class App : Avalonia.Application
 {
     private IServiceProvider _services;
 
@@ -22,7 +23,9 @@ public partial class App : Application
 
         builder.Configuration.AddJsonFile("appsettings.json");
 
+        builder.Services.AddMediatRCommands();
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
+        
         builder.Services.AddRepositories(builder.Configuration);
         builder.Services.AddViewModels();
         builder.Services.AddViews();

@@ -6,7 +6,7 @@
 
         public Task<List<T>> ListAsync();
 
-        public Task AddAsync(T entity);
+        public Task<int> AddAsync(T entity);
 
         public Task UpdateAsync(T entity);
 

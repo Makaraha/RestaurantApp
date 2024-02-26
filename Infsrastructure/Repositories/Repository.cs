@@ -15,10 +15,11 @@ namespace Infrastructure.Repositories
             _executor = executor;
         }
 
-        public async Task AddAsync(T entity)
+        public async Task<int> AddAsync(T entity)
         {
             var insertScript = _scriptGenerator.InsertScript(entity);
             await _executor.ExecuteNonQueryAsync(insertScript);
+            return await _executor.ExecuteScalarAsync(_scriptGenerator.LastIdScript<T>());
         }
 
         public Task DeleteAsync(int id)

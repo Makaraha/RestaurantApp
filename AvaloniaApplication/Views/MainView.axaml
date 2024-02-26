@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels"
 			 xmlns:orders="clr-namespace:AvaloniaApplication.Views.Tabs.Orders"
+			 xmlns:mesUnits="clr-namespace:AvaloniaApplication.Views.Tabs.MeasurementUnits"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.MainView"
 			 x:DataType="vm:MainViewModel">
@@ -18,6 +19,10 @@
 
 		<TabItem Header="Products">
 			
+		</TabItem>
+
+		<TabItem Header="Measurement units">
+			<mesUnits:MeasurementUnitsView DataContext="{Binding MeasurementUnitsViewModel}" />
 		</TabItem>
 	</TabControl>
 </UserControl>
