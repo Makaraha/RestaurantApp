@@ -24,7 +24,8 @@ namespace Infrastructure.Repositories
 
         public Task DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var deleteScript = _scriptGenerator.DeleteScript<T>(id);
+            return _executor.ExecuteNonQueryAsync(deleteScript);
         }
 
         public Task<T> GetAsync(int id)
@@ -32,15 +33,16 @@ namespace Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public async Task<List<T>> ListAsync()
+        public Task<List<T>> ListAsync()
         {
             var query = _scriptGenerator.SelectScript<T>();
-            return await _executor.ExecuteQuery<T>(query);
+            return _executor.ExecuteQuery<T>(query);
         }
 
         public Task UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            var query = _scriptGenerator.UpdateScript(entity);
+            return _executor.ExecuteNonQueryAsync(query);
         }
     }
 }

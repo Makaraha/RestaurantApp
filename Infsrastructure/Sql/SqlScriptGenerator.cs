@@ -35,6 +35,26 @@ namespace Infrastructure.Sql
             return $"INSERT INTO {tableName} ({names}) VALUES ({values})";
         }
 
+        public string DeleteScript<T>(int id)
+        {
+            var type = typeof(T);
+            var tableName = ExtractTableName(type);
+
+            return $"DELETE FROM {tableName} WHERE Id = {id}";
+        }
+
+        public string UpdateScript(object entity)
+        {
+            var type = entity.GetType();
+            var tableName = ExtractTableName(type);
+            var fields = ExtractFields(entity);
+            var primaryKey = fields.First(x => x.IsPrimaryKey);
+            var dataFields = fields.Where(x => !x.IsPrimaryKey);
+
+            var setStatement = string.Join(',', dataFields.Select(x => $"{x.Name} = '{x.Value}'"));
+            return $"UPDATE {tableName} SET {setStatement} WHERE {primaryKey.Name} = '{primaryKey.Value}'";
+        }
+
         private IEnumerable<SqlField> ExtractFields(object entity)
         {
             var type = entity.GetType();

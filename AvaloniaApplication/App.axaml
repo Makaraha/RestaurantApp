@@ -12,4 +12,8 @@
 			<Setter Property="FontSize" Value="18"/>
 		</Style>
     </Application.Styles>
+
+	<Application.Resources>
+		<Image x:Key="DeleteIcon" Source="avares://AvaloniaApplication/Assets/bin.png"/>
+	</Application.Resources>
 </Application>

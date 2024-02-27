@@ -13,7 +13,6 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
     public class MeasurementUnitsViewModel : ReactiveObject
     {
         private IMediator _mediator;
-        private int _lastId = 0;
 
         public MeasurementUnitsViewModel(IMediator mediator) 
         {
@@ -23,23 +22,30 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
 
         public ICommand AddMeasurementUnitCommand { get; private set; }
 
-        public ObservableCollection<MeasurementUnit> MeasurementUnits { get; private set; } = new ObservableCollection<MeasurementUnit>();
+        public MeasurementUnit SelectedItem { get; private set; }
+
+        public ObservableCollection<MeasurementUnitViewModel> MeasurementUnits { get; private set; } 
+            = new ObservableCollection<MeasurementUnitViewModel>();
 
         private async void Initialize()
         {
-            MeasurementUnits.AddRange(await _mediator.Send(new GetMeasurementUnitsQuery()));
+            var units = await _mediator.Send(new GetMeasurementUnitsQuery());
+            MeasurementUnits.AddRange(units.Select(x => CreateMeasurementUnitViewModel(x)));
             AddMeasurementUnitCommand = ReactiveCommand.Create(AddMeasurementUnit);
-
-            if (MeasurementUnits.Any())
-                _lastId = MeasurementUnits.Max(x => x.Id);
         }
 
         private async void AddMeasurementUnit()
         {
-            var name = $"MeasurementUnit_{_lastId + 1}";
+            var name = $"MeasurementUnit_{MeasurementUnits.Count + 1}";
             var unit = await _mediator.Send(new AddMeasurementUnitCommand() { Name = name });
-            MeasurementUnits.Add(unit);
-            _lastId = unit.Id;
+            MeasurementUnits.Add(CreateMeasurementUnitViewModel(unit));
+        }
+
+        private MeasurementUnitViewModel CreateMeasurementUnitViewModel(MeasurementUnit measurementUnit)
+        {
+            var viewModel = new MeasurementUnitViewModel(measurementUnit, _mediator);
+            viewModel.OnDeleted += () => MeasurementUnits.Remove(viewModel);
+            return viewModel;
         }
     }
 }
