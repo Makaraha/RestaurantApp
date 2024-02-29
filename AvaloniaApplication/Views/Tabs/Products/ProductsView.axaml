@@ -1,0 +1,45 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaApplication.Views.Tabs.Products.ProductsView"
+			 xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels.Tabs.Products"
+			 x:DataType="vm:ProductsViewModel">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="0.3*"/>
+		</Grid.RowDefinitions>
+		<DataGrid x:Name="MeasurementUnits" Grid.Row="0"
+			ItemsSource="{Binding Products}">
+			<DataGrid.Columns>
+				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+				
+				<DataGridTemplateColumn Header="MeasurementUnit" Width="0.5*">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<ComboBox ItemsSource="{Binding AvailableMeasurementUnits}" 
+									  SelectedValue="{Binding MeasurementUnit}">
+								<ComboBox.ItemTemplate>
+									<DataTemplate>
+										<TextBlock Text="{Binding Name}"/>
+									</DataTemplate>
+								</ComboBox.ItemTemplate>
+							</ComboBox>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+					
+				</DataGridTemplateColumn>
+				<DataGridTemplateColumn Header="Delete">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Button Command="{Binding DeleteProductCommand}" Content="Delete"/>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+		<Button Grid.Row="1" Command="{Binding AddProductCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
+	</Grid>
+</UserControl>

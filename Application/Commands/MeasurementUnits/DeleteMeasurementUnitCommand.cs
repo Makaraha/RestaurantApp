@@ -2,7 +2,7 @@
 using Domain.Services;
 using MediatR;
 
-namespace Application.Commands
+namespace Application.Commands.MeasurementUnits
 {
     public class DeleteMeasurementUnitCommand : IRequest
     {

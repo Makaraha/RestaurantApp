@@ -2,7 +2,7 @@
 using Domain.Services;
 using MediatR;
 
-namespace Application.Commands
+namespace Application.Commands.MeasurementUnits
 {
     public class AddMeasurementUnitCommand : IRequest<MeasurementUnit>
     {
@@ -13,7 +13,7 @@ namespace Application.Commands
     {
         private IRepository<MeasurementUnit> _repository;
 
-        public AddMeasurementUnitCommandHandler(IRepository<MeasurementUnit> repository) 
+        public AddMeasurementUnitCommandHandler(IRepository<MeasurementUnit> repository)
         {
             _repository = repository;
         }

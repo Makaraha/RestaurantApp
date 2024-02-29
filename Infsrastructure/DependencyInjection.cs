@@ -16,9 +16,9 @@ namespace Infrastructure
             if (connectionString == null)
                 throw new Exception("Failed to parse connectionString");
 
-            services.AddScoped(_ => new SqlCommandProvider(connectionString));
+            services.AddTransient(_ => new SqlCommandProvider(connectionString));
             services.AddSingleton<SqlDataMapper>();
-            services.AddScoped<SqlExecutor>();
+            services.AddTransient<SqlExecutor>();
             services.AddSingleton<SqlScriptGenerator>();
 
             services.AddScoped<IRepository<Product>, Repository<Product>>();

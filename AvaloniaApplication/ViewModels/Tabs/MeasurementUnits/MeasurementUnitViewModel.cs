@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
-using Application.Commands;
+using Application.Commands.MeasurementUnits;
 using Domain;
 using MediatR;
 using ReactiveUI;
@@ -40,14 +40,16 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
 
         private async void DeleteMeasurementUnit()
         {
-            await _mediator.Send(new DeleteMeasurementUnitCommand() { MeasurementUnitId = Id });
-            OnDeleted?.Invoke();
+            try
+            {
+                await _mediator.Send(new DeleteMeasurementUnitCommand() { MeasurementUnitId = Id });
+                OnDeleted?.Invoke();
+            }
+            catch { }
         }
 
         private async void UpdateMeasurementUnit(string newName)
         {
-            var oldName = _name;
-            _name = newName;
             try
             {
                 await _mediator.Send(new UpdateMeasurementUnitCommand()
@@ -55,10 +57,11 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
                     Id = Id,
                     Name = newName
                 });
+                _name = newName;
             }
-            catch
+            catch { }
+            finally
             {
-                _name = oldName;
                 this.RaisePropertyChanged(nameof(Name));
             }
         }
