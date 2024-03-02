@@ -1,9 +1,12 @@
-using Avalonia.Controls.Primitives;
-using ReactiveUI;
+using Avalonia.Controls;
 
 namespace AvaloniaApplication.Views.Tabs.DishTypes
 {
-    public partial class DishTypesView : ReactiveObject
+    public partial class DishTypesView : UserControl
     {
+        public DishTypesView()
+        {
+            InitializeComponent();
+        }
     }
 }

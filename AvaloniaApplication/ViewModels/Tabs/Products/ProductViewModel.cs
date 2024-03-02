@@ -78,8 +78,8 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
             catch { }
             finally
             {
-                this.RaisePropertyChanged(nameof(Name));
                 this.RaisePropertyChanged(nameof(MeasurementUnit));
+                this.RaisePropertyChanged(nameof(Name));
             }
         }
 
