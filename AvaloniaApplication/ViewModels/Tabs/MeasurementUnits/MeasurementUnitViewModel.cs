@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using Application.Commands.MeasurementUnits;
 using Domain;
+using Domain.Services;
 using MediatR;
 using ReactiveUI;
 
@@ -9,12 +9,11 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
 {
     public class MeasurementUnitViewModel : ReactiveObject
     {
-        private IMediator _mediator;
+        private IRepository<MeasurementUnit> _repository;
 
-        public MeasurementUnitViewModel(MeasurementUnit measurementUnit, IMediator mediator)
+        public MeasurementUnitViewModel(MeasurementUnit measurementUnit, IRepository<MeasurementUnit> repository)
         {
-            _mediator = mediator;
-
+            _repository = repository;
 
             _name = measurementUnit.Name;
             Id = measurementUnit.Id;
@@ -42,7 +41,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
         {
             try
             {
-                await _mediator.Send(new DeleteMeasurementUnitCommand() { MeasurementUnitId = Id });
+                await _repository.DeleteAsync(Id);
                 OnDeleted?.Invoke();
             }
             catch { }
@@ -52,7 +51,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
         {
             try
             {
-                await _mediator.Send(new UpdateMeasurementUnitCommand()
+                await _repository.UpdateAsync(new MeasurementUnit()
                 {
                     Id = Id,
                     Name = newName

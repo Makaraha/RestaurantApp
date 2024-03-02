@@ -22,6 +22,10 @@
 			<products:ProductsView DataContext="{Binding ProductsViewModel}" />
 		</TabItem>
 
+		<TabItem Header="DishTypes">
+			
+		</TabItem>
+
 		<TabItem Header="Measurement units">
 			<mesUnits:MeasurementUnitsView DataContext="{Binding MeasurementUnitsViewModel}" />
 		</TabItem>

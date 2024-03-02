@@ -3,10 +3,9 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Application.Commands.Products;
 using AvaloniaApplication.ViewModels.Tabs.MeasurementUnits;
 using Domain;
-using MediatR;
+using Domain.Services;
 using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.Tabs.Products
@@ -14,12 +13,12 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
     public class ProductViewModel : ReactiveObject
     {
         private MeasurementUnitsViewModel _measurementUnitsViewModel;
-        private IMediator _mediator;
+        private IRepository<Product> _repository;
 
-        public ProductViewModel(IMediator mediator, Product product, MeasurementUnitsViewModel measurementUnits)
+        public ProductViewModel(IRepository<Product> repository, Product product, MeasurementUnitsViewModel measurementUnits)
         {
             _measurementUnitsViewModel = measurementUnits;
-            _mediator = mediator;
+            _repository = repository;
 
             Id = product.Id;
             _name = product.Name;
@@ -66,7 +65,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
         {
             try
             {
-                await _mediator.Send(new UpdateProductCommand()
+                await _repository.UpdateAsync(new Product()
                 {
                     Id = Id,
                     Name = name,
@@ -80,17 +79,13 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
             finally
             {
                 this.RaisePropertyChanged(nameof(Name));
-                this.RaisePropertyChanged(nameof(MeasurementUnit.Id));
+                this.RaisePropertyChanged(nameof(MeasurementUnit));
             }
         }
 
         private async Task DeleteProduct()
         {
-            await _mediator.Send(new DeleteProductCommand()
-            {
-                ProductId = Id
-            });
-
+            await _repository.DeleteAsync(Id);
             OnDeleted?.Invoke(this);
         }
     }

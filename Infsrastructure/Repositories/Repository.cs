@@ -1,10 +1,11 @@
-﻿using Domain.Services;
+﻿using Domain.Interfaces;
+using Domain.Services;
 using Infrastructure.Sql;
 
 namespace Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T>
-        where T : new()
+        where T : IIdHas, new()
     {
         private SqlScriptGenerator _scriptGenerator;
         private SqlExecutor _executor;
@@ -15,11 +16,13 @@ namespace Infrastructure.Repositories
             _executor = executor;
         }
 
-        public async Task<int> AddAsync(T entity)
+        public async Task<T> AddAsync(T entity)
         {
             var insertScript = _scriptGenerator.InsertScript(entity);
             await _executor.ExecuteNonQueryAsync(insertScript);
-            return await _executor.ExecuteScalarAsync(_scriptGenerator.LastIdScript<T>());
+            var id = await _executor.ExecuteScalarAsync(_scriptGenerator.LastIdScript<T>());
+            entity.Id = id;
+            return entity;
         }
 
         public Task DeleteAsync(int id)

@@ -1,9 +1,10 @@
 ﻿using Domain.Attributes;
 
+using Domain.Interfaces;
 namespace Domain
 {
     [TableName("Ingredients")]
-    public class Ingredient
+    public  class Ingredient : IIdHas
     {
         [PrimaryKey]
         public int Id { get; set; }

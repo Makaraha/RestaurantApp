@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Application.Commands.Products;
 using Application.Queries.Products;
-using Avalonia.Metadata;
 using AvaloniaApplication.ViewModels.Tabs.MeasurementUnits;
 using Domain;
+using Domain.Services;
 using MediatR;
 using ReactiveUI;
 
@@ -14,12 +13,12 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
 {
     public class ProductsViewModel : ReactiveObject
     {
-        private IMediator _mediator;
+        private IRepository<Product> _repository;
         private MeasurementUnitsViewModel _measurementUnitsViewModel;
 
-        public ProductsViewModel(IMediator mediator, MeasurementUnitsViewModel measurementUnitsViewModel)
+        public ProductsViewModel(IRepository<Product> repository, MeasurementUnitsViewModel measurementUnitsViewModel)
         {
-            _mediator = mediator;
+            _repository = repository;
             _measurementUnitsViewModel = measurementUnitsViewModel;
 
             Initialize();
@@ -27,7 +26,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
 
         private async void Initialize()
         {
-            var products = await _mediator.Send(new GetProductsQuery());
+            var products = await _repository.ListAsync();
             AddProductCommand = ReactiveCommand.Create(async () => await AddProduct());
 
             await _measurementUnitsViewModel.WaitForInitializationAsync();
@@ -54,7 +53,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
                 var name = $"Product {Products.Count + 1}";
                 var measurementUnitId = _measurementUnitsViewModel.MeasurementUnits.First().Id;
 
-                var product = await _mediator.Send(new AddProductCommand()
+                var product = await _repository.AddAsync(new Product()
                 {
                     MeasurementUnitId = measurementUnitId,
                     Name = name
@@ -67,7 +66,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
 
         private ProductViewModel CreateProductViewModel(Product product)
         {
-            var viewModel = new ProductViewModel(_mediator, product, _measurementUnitsViewModel);
+            var viewModel = new ProductViewModel(_repository, product, _measurementUnitsViewModel);
             viewModel.OnDeleted += WhenProductDeleted;
             return viewModel;
         }
