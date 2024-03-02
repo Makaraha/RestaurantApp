@@ -21,5 +21,11 @@ namespace RestaurantApp.Controllers
         {
             var list = await _repository.ListAsync();
         }
+
+        [HttpPost(Name = "GetDishes")]
+        public List<Dish> GetDusg()
+        {
+            return new List<Dish>();
+        }
     }
 }

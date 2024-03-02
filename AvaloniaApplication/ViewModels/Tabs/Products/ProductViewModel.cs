@@ -16,36 +16,72 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
         private MeasurementUnitsViewModel _measurementUnitsViewModel;
         private IMediator _mediator;
 
-        public ProductViewModel(IMediator mediator, Product product, MeasurementUnitsViewModel measurementUnits) 
+        public ProductViewModel(IMediator mediator, Product product, MeasurementUnitsViewModel measurementUnits)
         {
             _measurementUnitsViewModel = measurementUnits;
             _mediator = mediator;
 
             Id = product.Id;
-            Name = product.Name;
-            MeasurementUnitId = product.MeasurementUnitId;
+            _name = product.Name;
 
             DeleteProductCommand = ReactiveCommand.Create(async () => await DeleteProduct());
-            MeasurementUnit = AvailableMeasurementUnits.FirstOrDefault();
+            _measurementUnit = AvailableMeasurementUnits.First(x => x.Id == product.MeasurementUnitId);
         }
 
         public event Action<ProductViewModel>? OnDeleted;
 
         public int Id { get; }
 
-        public int MeasurementUnitId { get; set; }
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                if(_name == value) 
+                    return;
 
-        public string Name { get; set; }
+                UpdateProduct(value, _measurementUnit);
+            }
+        }
 
         public ObservableCollection<MeasurementUnitViewModel> AvailableMeasurementUnits => _measurementUnitsViewModel.MeasurementUnits;
 
-        public MeasurementUnitViewModel? MeasurementUnit { get; set; }
+        private MeasurementUnitViewModel _measurementUnit;
+        public MeasurementUnitViewModel MeasurementUnit
+        {
+            get => _measurementUnit;
+            set
+            {
+                if (_measurementUnit == value)
+                    return;
+
+                UpdateProduct(_name, value);
+            }
+        }
 
         public ICommand DeleteProductCommand { get; set; }
 
-        private async Task UpdateProduct()
+        private async void UpdateProduct(string name, MeasurementUnitViewModel measurementUnit)
         {
-            
+            try
+            {
+                await _mediator.Send(new UpdateProductCommand()
+                {
+                    Id = Id,
+                    Name = name,
+                    MeasurementUnitId = measurementUnit.Id,
+                });
+
+                _name = name;
+                _measurementUnit = measurementUnit;
+            }
+            catch { }
+            finally
+            {
+                this.RaisePropertyChanged(nameof(Name));
+                this.RaisePropertyChanged(nameof(MeasurementUnit.Id));
+            }
         }
 
         private async Task DeleteProduct()

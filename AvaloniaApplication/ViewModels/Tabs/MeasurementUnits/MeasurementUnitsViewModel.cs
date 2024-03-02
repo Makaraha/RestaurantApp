@@ -26,8 +26,6 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
 
         public ICommand AddMeasurementUnitCommand { get; private set; }
 
-        public MeasurementUnit SelectedItem { get; private set; }
-
         public ObservableCollection<MeasurementUnitViewModel> MeasurementUnits { get; private set; } 
             = new ObservableCollection<MeasurementUnitViewModel>();
 
