@@ -28,31 +28,21 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
                 if(_entity.Name == value) 
                     return;
 
-                UpdateEntity(new Product()
-                {
-                    Id = Id,
-                    Name = value,
-                    MeasurementUnitId = MeasurementUnit.Id
-                });
+                UpdateEntity(_entity with { Name = value });
             }
         }
 
         public ObservableCollection<MeasurementUnitViewModel> AvailableMeasurementUnits => _measurementUnitsViewModel.Entities;
 
-        public MeasurementUnitViewModel MeasurementUnit
+        public MeasurementUnitViewModel? MeasurementUnit
         {
-            get => AvailableMeasurementUnits.First(x => x.Id == _entity.MeasurementUnitId);
+            get => AvailableMeasurementUnits.FirstOrDefault(x => x.Id == _entity.MeasurementUnitId);
             set
             {
                 if (value == null || _entity.MeasurementUnitId == value.Id)
                     return;
 
-                UpdateEntity(new Product() 
-                { 
-                    Id = Id, 
-                    Name = Name, 
-                    MeasurementUnitId = value.Id
-                });
+                UpdateEntity(_entity with { MeasurementUnitId = value.Id });
             }
         }
 

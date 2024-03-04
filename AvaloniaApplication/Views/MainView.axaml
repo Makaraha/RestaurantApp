@@ -7,6 +7,7 @@
 			 xmlns:mesUnits="clr-namespace:AvaloniaApplication.Views.Tabs.MeasurementUnits"
 			 xmlns:products="clr-namespace:AvaloniaApplication.Views.Tabs.Products"
 			 xmlns:dishTypes="clr-namespace:AvaloniaApplication.Views.Tabs.DishTypes"
+			 xmlns:dishes="clr-namespace:AvaloniaApplication.Views.Tabs.Dishes"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.MainView"
 			 x:DataType="vm:MainViewModel">
@@ -16,7 +17,7 @@
 		</TabItem>
 
 		<TabItem Header="Dishes">
-			
+			<dishes:DishesView DataContext="{Binding DishesViewModel}" />
 		</TabItem>
 
 		<TabItem Header="DishTypes">

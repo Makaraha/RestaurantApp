@@ -17,11 +17,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.DishTypes
             get => _entity.Name;
             set
             {
-                UpdateEntity(new DishType()
-                {
-                    Id = Id,
-                    Name = value
-                });
+                UpdateEntity(_entity with { Name = value });
             }
         }
 

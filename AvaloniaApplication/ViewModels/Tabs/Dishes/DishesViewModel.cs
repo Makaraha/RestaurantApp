@@ -27,7 +27,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
 
         protected override DishViewModel CreateEntityViewModel(Dish entity)
         {
-            return new DishViewModel(entity, _repository);
+            return new DishViewModel(entity, _dishTypesViewModel, _repository);
         }
 
         protected override Dish CreateNewEntity()
@@ -37,7 +37,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
 
             return new Dish()
             {
-                Name = $"Dish {Entities.Count}",
+                Name = $"Dish {Entities.Count + 1}",
                 DishTypeId = _dishTypesViewModel.Entities.First().Id
             };
         }

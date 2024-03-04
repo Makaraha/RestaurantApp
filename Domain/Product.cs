@@ -3,7 +3,7 @@ using Domain.Interfaces;
 namespace Domain
 {
     [TableName("Products")]
-    public class Product : IEntity
+    public record Product : IEntity
     {
         [PrimaryKey]
         public int Id { get; set; }

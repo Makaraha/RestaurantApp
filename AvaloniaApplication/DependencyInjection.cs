@@ -1,10 +1,12 @@
 ﻿using System.Reflection;
 using AvaloniaApplication.ViewModels;
+using AvaloniaApplication.ViewModels.Tabs.Dishes;
 using AvaloniaApplication.ViewModels.Tabs.DishTypes;
 using AvaloniaApplication.ViewModels.Tabs.MeasurementUnits;
 using AvaloniaApplication.ViewModels.Tabs.Orders;
 using AvaloniaApplication.ViewModels.Tabs.Products;
 using AvaloniaApplication.Views;
+using AvaloniaApplication.Views.Tabs.Dishes;
 using AvaloniaApplication.Views.Tabs.DishTypes;
 using AvaloniaApplication.Views.Tabs.MeasurementUnits;
 using AvaloniaApplication.Views.Tabs.Orders;
@@ -22,6 +24,7 @@ namespace AvaloniaApplication
             services.AddSingleton<DishTypesViewModel>();
             services.AddSingleton<MeasurementUnitsViewModel>();
             services.AddSingleton<ProductsViewModel>();
+            services.AddSingleton<DishesViewModel>();
             services.AddSingleton<OrdersViewModel>();
             services.AddSingleton<MainViewModel>();
         }
@@ -31,6 +34,7 @@ namespace AvaloniaApplication
             services.AddSingleton<DishTypesView>();
             services.AddSingleton<MeasurementUnitsView>();
             services.AddSingleton<ProductsView>();
+            services.AddSingleton<DishesView>();
             services.AddSingleton<OrdersView>();
             services.AddSingleton<MainView>();
 

@@ -21,11 +21,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
                 if(_entity.Name == value) 
                     return;
 
-                UpdateEntity(new MeasurementUnit()
-                {
-                    Id = Id,
-                    Name = value
-                });
+                UpdateEntity(_entity with { Name = value });
             }
         }
 
