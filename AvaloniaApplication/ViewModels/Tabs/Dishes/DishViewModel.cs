@@ -3,11 +3,11 @@ using Domain;
 using Domain.Services;
 using ReactiveUI;
 
-namespace AvaloniaApplication.ViewModels.Tabs.DishTypes
+namespace AvaloniaApplication.ViewModels.Tabs.Dishes
 {
-    public class DishTypeViewModel : BaseEntityViewModel<DishType>
+    public class DishViewModel : BaseEntityViewModel<Dish>
     {
-        public DishTypeViewModel(DishType dishType, IRepository<DishType> repository) : base(dishType, repository)
+        public DishViewModel(Dish dish, IRepository<Dish> repository) : base(dish, repository)
         { }
 
         public int Id => _entity.Id;
@@ -17,10 +17,11 @@ namespace AvaloniaApplication.ViewModels.Tabs.DishTypes
             get => _entity.Name;
             set
             {
-                UpdateEntity(new DishType()
+                UpdateEntity(new Dish()
                 {
                     Id = Id,
-                    Name = value
+                    Name = value,
+                    DishTypeId = 1
                 });
             }
         }

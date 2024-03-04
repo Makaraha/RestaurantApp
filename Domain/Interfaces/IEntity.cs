@@ -1,6 +1,6 @@
 ﻿namespace Domain.Interfaces
 {
-    public interface IIdHas
+    public interface IEntity
     {
         public int Id { get; set; }
     }

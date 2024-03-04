@@ -5,7 +5,7 @@ using Infrastructure.Sql;
 namespace Infrastructure.Repositories
 {
     public class Repository<T> : IRepository<T>
-        where T : IIdHas, new()
+        where T : IEntity, new()
     {
         private SqlScriptGenerator _scriptGenerator;
         private SqlExecutor _executor;

@@ -1,57 +1,24 @@
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using AvaloniaApplication.ViewModels.BaseViewModels;
 using Domain;
 using Domain.Services;
-using DynamicData;
-using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.Tabs.DishTypes
 {
-    public class DishTypesViewModel : ReactiveObject
+    public class DishTypesViewModel : BaseEntitiesViewModel<DishType, DishTypeViewModel>
 	{
-        private IRepository<DishType> _repository;
-        private TaskCompletionSource _initializationTcs;
-
-        public DishTypesViewModel(IRepository<DishType> repository)
+        public DishTypesViewModel(IRepository<DishType> repository) : base(repository)
         {
-            _repository = repository;
-            _initializationTcs = new TaskCompletionSource();
             Initialize();
         }
 
-        public ICommand AddDishTypeCommand { get; private set; }
-
-        public ObservableCollection<DishTypeViewModel> DishTypes { get; private set; }
-            = new ObservableCollection<DishTypeViewModel>();
-
-        public Task WaitForInitializationAsync()
+        protected override DishTypeViewModel CreateEntityViewModel(DishType entity)
         {
-            return _initializationTcs.Task;
+            return new DishTypeViewModel(entity, _repository);
         }
 
-        private async void Initialize()
+        protected override DishType CreateNewEntity()
         {
-            var dishTypes = await _repository.ListAsync();
-            DishTypes.AddRange(dishTypes.Select(CreateDishTypeViewModel));
-            AddDishTypeCommand = ReactiveCommand.Create(AddDishType);
-
-            _initializationTcs.SetResult();
-        }
-
-        private async void AddDishType()
-        {
-            var name = $"DishType {DishTypes.Count + 1}";
-            var dishType = await _repository.AddAsync(new DishType() { Name = name });
-            DishTypes.Add(CreateDishTypeViewModel(dishType));
-        }
-
-        private DishTypeViewModel CreateDishTypeViewModel(DishType dishType)
-        {
-            var viewModel = new DishTypeViewModel(dishType, _repository);
-            viewModel.OnDeleted += () => DishTypes.Remove(viewModel);
-            return viewModel;
+            return new DishType() { Name = $"DishType {Entities.Count + 1}" };
         }
     }
 }

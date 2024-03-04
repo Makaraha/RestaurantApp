@@ -4,7 +4,7 @@ using Domain.Interfaces;
 namespace Domain
 {
     [TableName("DishTypes")]
-    public class DishType : IIdHas
+    public class DishType : IEntity
     {
         [PrimaryKey]
         public int Id { get; set; }

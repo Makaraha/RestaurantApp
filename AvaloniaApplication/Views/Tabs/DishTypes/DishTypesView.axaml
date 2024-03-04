@@ -5,25 +5,26 @@
 			 xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels.Tabs.DishTypes"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.Tabs.DishTypes.DishTypesView"
-			 x:DataType="vm:DishTypesViewModel">
+			 x:CompileBindings="False">
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="0.3*"/>
 		</Grid.RowDefinitions>
 		<DataGrid Grid.Row="0"
-			ItemsSource="{Binding DishTypes}">
+			x:DataType="vm:DishTypesViewModel"
+			ItemsSource="{Binding Entities}">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
 				<DataGridTemplateColumn Header="Delete">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
-							<Button Command="{Binding DeleteDishTypeCommand}" Content="Delete"/>
+							<Button Command="{Binding DeleteEntityCommand}" Content="Delete"/>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
 				</DataGridTemplateColumn>
 			</DataGrid.Columns>
 		</DataGrid>
-		<Button Grid.Row="1" Command="{Binding AddDishTypeCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
+		<Button Grid.Row="1" Command="{Binding AddEntityCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
 	</Grid>
 </UserControl>

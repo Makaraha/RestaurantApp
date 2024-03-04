@@ -1,68 +1,38 @@
-﻿using System;
-using System.Windows.Input;
+﻿using AvaloniaApplication.ViewModels.BaseViewModels;
 using Domain;
 using Domain.Services;
-using MediatR;
 using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.Tabs.MeasurementUnits
 {
-    public class MeasurementUnitViewModel : ReactiveObject
+    public class MeasurementUnitViewModel : BaseEntityViewModel<MeasurementUnit>
     {
-        private IRepository<MeasurementUnit> _repository;
-
-        public MeasurementUnitViewModel(MeasurementUnit measurementUnit, IRepository<MeasurementUnit> repository)
+        public MeasurementUnitViewModel(MeasurementUnit entity, IRepository<MeasurementUnit> repository) : base(entity, repository)
         {
-            _repository = repository;
-
-            _name = measurementUnit.Name;
-            Id = measurementUnit.Id;
-
-            DeleteMeasurementUnitCommand = ReactiveCommand.Create(DeleteMeasurementUnit);
         }
 
-        public int Id { get; }
+        public int Id => _entity.Id;
 
-        private string _name;
         public string Name
         {
-            get => _name;
+            get => _entity.Name;
             set
             {
-                UpdateMeasurementUnit(value);
-            }
-        }
+                if(_entity.Name == value) 
+                    return;
 
-        public ICommand DeleteMeasurementUnitCommand { get; private set; }
-
-        public event Action? OnDeleted;
-
-        private async void DeleteMeasurementUnit()
-        {
-            try
-            {
-                await _repository.DeleteAsync(Id);
-                OnDeleted?.Invoke();
-            }
-            catch { }
-        }
-
-        private async void UpdateMeasurementUnit(string newName)
-        {
-            try
-            {
-                await _repository.UpdateAsync(new MeasurementUnit()
+                UpdateEntity(new MeasurementUnit()
                 {
                     Id = Id,
-                    Name = newName
+                    Name = value
                 });
-                _name = newName;
             }
-            catch { }
-            finally
-            {
-                this.RaisePropertyChanged(nameof(Name));
-            }
+        }
+
+        protected override void RaiseUpdate()
+        {
+            this.RaisePropertyChanged(nameof(Id));
+            this.RaisePropertyChanged(nameof(Name));
         }
     }
 }
