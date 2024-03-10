@@ -3,43 +3,57 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 			 xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels.Tabs.Dishes"
+			 xmlns:ingr="clr-namespace:AvaloniaApplication.Views.Tabs.Dishes"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.Tabs.Dishes.DishesView"
 			 x:CompileBindings="False">
 	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="0.3*"/>
-		</Grid.RowDefinitions>
-		<DataGrid Grid.Row="0"
-			ItemsSource="{Binding Entities}">
-			<DataGrid.Columns>
-				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+		<Grid IsVisible="{Binding IsIngredientsVisible}">
+			<ingr:IngredientsView DataContext="{Binding IngredientsViewModel}" />
+		</Grid>
+		<Grid IsVisible="{Binding IsDishesVisible}">
+			<Grid.RowDefinitions> 
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="0.3*"/>
+			</Grid.RowDefinitions>
+			<DataGrid Grid.Row="0"
+				ItemsSource="{Binding Entities}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
 				
-				<DataGridTemplateColumn Header="DishType" Width="0.5*">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<ComboBox ItemsSource="{Binding AvailableDishTypes}"
-									  SelectedValue="{Binding DishType}">
-								<ComboBox.ItemTemplate>
-									<DataTemplate>
-										<TextBlock Text="{Binding Name}"/>
-									</DataTemplate>
-								</ComboBox.ItemTemplate>
-							</ComboBox>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
+					<DataGridTemplateColumn Header="DishType" Width="0.5*">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<ComboBox ItemsSource="{Binding AvailableDishTypes}"
+										  SelectedValue="{Binding DishType}">
+									<ComboBox.ItemTemplate>
+										<DataTemplate>
+											<TextBlock Text="{Binding Name}"/>
+										</DataTemplate>
+									</ComboBox.ItemTemplate>
+								</ComboBox>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTemplateColumn Header="Show ingredients">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button Command="{Binding ShowIngredientsCommand}" Content="Show ingredients"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
 					
-				<DataGridTemplateColumn Header="Delete">
-					<DataGridTemplateColumn.CellTemplate>
-						<DataTemplate>
-							<Button Command="{Binding DeleteEntityCommand}" Content="Delete"/>
-						</DataTemplate>
-					</DataGridTemplateColumn.CellTemplate>
-				</DataGridTemplateColumn>
-			</DataGrid.Columns>
-		</DataGrid>
-		<Button Grid.Row="1" Command="{Binding AddEntityCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
+					<DataGridTemplateColumn Header="Delete">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button Command="{Binding DeleteEntityCommand}" Content="Delete"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+			<Button Grid.Row="1" Command="{Binding AddEntityCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
+		</Grid>
 	</Grid>
 </UserControl>

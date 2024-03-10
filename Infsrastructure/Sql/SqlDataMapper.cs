@@ -43,10 +43,12 @@ namespace Infrastructure.Sql
         {
             if (property.PropertyType == typeof(int))
                 return reader.GetInt32(i);
+            else if(property.PropertyType == typeof(float))
+                return reader.GetFloat(i);
             else if (property.PropertyType == typeof(string))
                 return reader.GetString(i);
             else
-                throw new Exception("Unknown property type");
+                throw new Exception($"Unknown property type: {property.PropertyType.Name}");
         }
     }
 }

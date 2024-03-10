@@ -1,6 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 using AvaloniaApplication.ViewModels.BaseViewModels;
+using AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients;
 using AvaloniaApplication.ViewModels.Tabs.DishTypes;
 using Domain;
 using Domain.Services;
@@ -12,10 +15,17 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
     {
         private DishTypesViewModel _dishTypesViewModel;
 
-        public DishViewModel(Dish dish, DishTypesViewModel dishTypesViewModel, IRepository<Dish> repository) : base(dish, repository)
+        public DishViewModel(Dish dish, 
+            DishTypesViewModel dishTypesViewModel, 
+            IRepository<Dish> repository,
+            Action<DishViewModel> showIngredientsAction) : base(dish, repository)
         {
             _dishTypesViewModel = dishTypesViewModel;
+
+            ShowIngredientsCommand = ReactiveCommand.Create(() => showIngredientsAction(this));
         }
+
+        public ICommand ShowIngredientsCommand { get; }
 
         public int Id => _entity.Id;
 
@@ -24,12 +34,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
             get => _entity.Name;
             set
             {
-                UpdateEntity(new Dish()
-                {
-                    Id = Id,
-                    Name = value,
-                    DishTypeId = 1
-                });
+                UpdateEntity(_entity with { Name = value });
             }
         }
 

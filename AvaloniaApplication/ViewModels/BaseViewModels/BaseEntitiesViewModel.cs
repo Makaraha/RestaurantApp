@@ -1,7 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients;
 using Domain.Interfaces;
 using Domain.Services;
 using DynamicData;
@@ -23,6 +25,10 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
 
             AddEntityCommand = ReactiveCommand.Create(AddEntity);
         }
+
+        public event Action<TViewModel>? OnDeleted;
+
+        public event Action<TEntity>? OnInserted;
 
         public ICommand AddEntityCommand { get; protected set; }
 
@@ -46,6 +52,7 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
             {
                 var entity = await _repository.AddAsync(CreateNewEntity());
                 Entities.Add(CreateSubscribedEntityViewModel(entity));
+                OnInserted?.Invoke(entity);
             }
             catch { }
         }
@@ -57,7 +64,11 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
         protected virtual TViewModel CreateSubscribedEntityViewModel(TEntity entity)
         {
             var viewModel = CreateEntityViewModel(entity);
-            viewModel.OnDeleted += () => Entities.Remove(viewModel);
+            viewModel.OnDeleted += () =>
+            {
+                Entities.Remove(viewModel);
+                OnDeleted?.Invoke(viewModel);
+            };
             return viewModel;
         }
     }
