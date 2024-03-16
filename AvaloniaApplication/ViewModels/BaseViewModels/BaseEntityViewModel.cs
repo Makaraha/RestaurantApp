@@ -50,7 +50,10 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
                 await _repository.DeleteAsync(id);
                 OnDeleted?.Invoke();
             }
-            catch { }
+            catch(Exception ex)
+            {
+                ShowException(ex);
+            }
         }
 
         protected abstract void RaiseUpdate();

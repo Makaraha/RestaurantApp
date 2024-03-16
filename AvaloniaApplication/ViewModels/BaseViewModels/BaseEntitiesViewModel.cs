@@ -54,7 +54,10 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
                 Entities.Add(CreateSubscribedEntityViewModel(entity));
                 OnInserted?.Invoke(entity);
             }
-            catch { }
+            catch(Exception ex)
+            {
+                ShowException(ex);
+            }
         }
 
         protected abstract TEntity CreateNewEntity();

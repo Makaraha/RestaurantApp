@@ -10,6 +10,7 @@
 		MinHeight="300"
 		MaxHeight="700"
 		SizeToContent="Height"
+		WindowStartupLocation="CenterScreen"
         x:Class="AvaloniaApplication.Views.Popups.ExceptionPopup"
 		x:CompileBindings="False">
 	<Grid Margin="10" VerticalAlignment="Stretch">
