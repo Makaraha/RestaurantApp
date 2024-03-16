@@ -26,6 +26,8 @@ namespace Infrastructure
             services.AddScoped<IRepository<DishType>, Repository<DishType>>();
             services.AddScoped<IRepository<Dish>, Repository<Dish>>();
             services.AddScoped<IRepository<Ingredient>, Repository<Ingredient>>();
+            services.AddScoped<IRepository<Order>, Repository<Order>>();
+            services.AddScoped<IRepository<DishOrder>, Repository<DishOrder>>();
         }
     }
 }

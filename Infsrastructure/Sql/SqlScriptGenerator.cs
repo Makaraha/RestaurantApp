@@ -30,7 +30,7 @@ namespace Infrastructure.Sql
                 .ToList(); 
 
             var names = string.Join(", ", fields.Select(x => x.Name));
-            var values = string.Join(", ", fields.Select(x => $"'{x.Value?.ToString() ?? "NULL"}'"));
+            var values = string.Join(", ", fields.Select(x => $"'{ValueToString(x.Value)}'"));
 
             return $"INSERT INTO {tableName} ({names}) VALUES ({values})";
         }
@@ -79,6 +79,21 @@ namespace Infrastructure.Sql
                 throw new Exception("Failed to extract tableName attribute");
 
             return tableName;
+        }
+
+        private string ValueToString(object? value)
+        {
+            if (value == null)
+                return "NULL";
+
+            switch (value)
+            {
+                case DateTime _dateTime:
+                    return _dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+                default:
+                    return value.ToString() ?? "NULL";
+            }
         }
     }
 }

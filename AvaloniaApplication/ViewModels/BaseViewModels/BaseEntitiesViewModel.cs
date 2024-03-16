@@ -11,7 +11,7 @@ using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.BaseViewModels
 {
-    public abstract class BaseEntitiesViewModel<TEntity, TViewModel> : ReactiveObject
+    public abstract class BaseEntitiesViewModel<TEntity, TViewModel> : BaseViewModel
         where TEntity : IEntity
         where TViewModel : BaseEntityViewModel<TEntity>
     {

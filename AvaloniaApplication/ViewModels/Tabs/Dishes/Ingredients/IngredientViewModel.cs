@@ -27,10 +27,10 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients
             get => AvailableProducts.FirstOrDefault(x => x.Id == _entity.ProductId);
             set
             {
-                if (value == null || _entity.DishId == value.Id)
+                if (value == null || _entity.ProductId == value.Id)
                     return;
 
-                UpdateEntity(_entity with { DishId = value.Id });
+                UpdateEntity(_entity with { ProductId = value.Id });
             }
         }
 

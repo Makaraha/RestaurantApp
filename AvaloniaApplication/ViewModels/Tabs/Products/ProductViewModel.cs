@@ -1,10 +1,10 @@
-﻿using System.Collections.ObjectModel;
-using System.Linq;
-using AvaloniaApplication.ViewModels.BaseViewModels;
+﻿using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.MeasurementUnits;
 using Domain;
 using Domain.Services;
 using ReactiveUI;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace AvaloniaApplication.ViewModels.Tabs.Products
 {

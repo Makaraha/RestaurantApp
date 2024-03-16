@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AvaloniaApplication.Views.Popups;
 using Domain.Interfaces;
 using Domain.Services;
 using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.BaseViewModels
 {
-    public abstract class BaseEntityViewModel<T> : ReactiveObject
+    public abstract class BaseEntityViewModel<T> : BaseViewModel
         where T : IEntity
     {
         protected T _entity;
@@ -32,7 +33,10 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
                 await _repository.UpdateAsync(entity);
                 _entity = entity;
             }
-            catch { }
+            catch(Exception ex)
+            {
+                ShowException(ex);
+            }
             finally
             {
                 RaiseUpdate();

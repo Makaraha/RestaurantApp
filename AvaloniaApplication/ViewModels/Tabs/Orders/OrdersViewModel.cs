@@ -1,28 +1,113 @@
 using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Linq;
+using AvaloniaApplication.ViewModels.BaseViewModels;
+using AvaloniaApplication.ViewModels.Tabs.Dishes;
+using AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients;
+using AvaloniaApplication.ViewModels.Tabs.Orders.Dishes;
 using Domain;
-using MediatR;
+using Domain.Services;
+using DynamicData;
 using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.Tabs.Orders
 {
-    public class OrdersViewModel : ReactiveObject
-	{
-        private IMediator _mediator;
+    public class OrdersViewModel : BaseEntitiesViewModel<Order, OrderViewModel>
+    {
+        private DishesViewModel _dishesViewModel;
+        private DishOrdersViewModel _orderDishesViewModel;
+        private IRepository<DishOrder> _dishOrdersRepository;
+        private List<DishOrder> _dishOrders;
 
-		public OrdersViewModel(IMediator mediator)
-		{
-           _mediator = mediator;
-		}
+        private bool _isDishOrdersVisible;
+        private bool _isOrdersVisible;
 
-		public ObservableCollection<OrderViewModel> Orders => new ObservableCollection<OrderViewModel>
+        public OrdersViewModel(IRepository<Order> repository,
+            IRepository<DishOrder> dishOrdersRepository,
+            DishesViewModel dishesViewModel) : base(repository)
+        {
+            _dishOrdersRepository = dishOrdersRepository;
+            _dishesViewModel = dishesViewModel;
+
+            IsDishOrdersVisible = false;
+            IsOrdersVisible = true;
+
+            Initialize();
+        }
+
+        public bool IsOrdersVisible
+        {
+            get => _isOrdersVisible;
+            set
             {
-                new OrderViewModel(new Order { Id = 1, OrderTime = DateTime.Now }),
-                new OrderViewModel(new Order { Id = 2, OrderTime = DateTime.Now }),
-                new OrderViewModel(new Order { Id = 1, OrderTime = DateTime.Now }),
-                new OrderViewModel(new Order { Id = 2, OrderTime = DateTime.Now }),
-            };
+                if (_isOrdersVisible == value)
+                    return;
 
-        public string Test => "Hello test";
+                _isOrdersVisible = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public bool IsDishOrdersVisible
+        {
+            get => _isDishOrdersVisible;
+            set
+            {
+                if (_isDishOrdersVisible == value)
+                    return;
+
+                _isDishOrdersVisible = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        public DishOrdersViewModel? OrderDishesViewModel
+        {
+            get => _orderDishesViewModel;
+            set
+            {
+                if (value == null || _orderDishesViewModel == value)
+                    return;
+
+                _orderDishesViewModel = value;
+                this.RaisePropertyChanged();
+            }
+        }
+
+        protected override async void Initialize()
+        {
+            _dishOrders = await _dishOrdersRepository.ListAsync();
+
+            base.Initialize();
+        }
+
+        protected override OrderViewModel CreateEntityViewModel(Order entity)
+        {
+            return new OrderViewModel(entity, _repository, ShowDishOrders);
+        }
+
+        protected override Order CreateNewEntity() 
+        {
+            return new Order()
+            {
+                OrderTime = DateTime.UtcNow
+            };
+        }
+
+        private void ShowDishOrders(OrderViewModel order)
+        {
+            OrderDishesViewModel = new DishOrdersViewModel(_dishesViewModel, order, _dishOrdersRepository, _dishOrders.Where(x => x.DishId == order.Id), ShowDishes);
+            OrderDishesViewModel.OnDeleted += (viewModel) => _dishOrders.RemoveMany(_dishOrders.Where(x => x.Id == viewModel.Id));
+            OrderDishesViewModel.OnInserted += (entity) => _dishOrders.Add(entity);
+
+            IsDishOrdersVisible = true;
+            IsOrdersVisible = false;
+        }
+
+        private void ShowDishes()
+        {
+            IsOrdersVisible = true;
+            IsDishOrdersVisible = false;
+        }
     }
 }

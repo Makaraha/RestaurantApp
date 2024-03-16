@@ -5,17 +5,44 @@
 			 xmlns:vm="clr-namespace:AvaloniaApplication.ViewModels.Tabs.Orders"
 			 xmlns:views="clr-namespace:AvaloniaApplication.Views.Tabs.Orders"
 			 xmlns:reuse="clr-namespace:AvaloniaApplication.Controls.Reusables"
+			 xmlns:dishes="clr-namespace:AvaloniaApplication.Views.Tabs.Orders"
              xmlns:data="clr-namespace:Domain;assembly=Domain"
 			 mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.Tabs.Orders.OrdersView"
-			 x:DataType="vm:OrdersViewModel">
-  <StackPanel>
-	  <reuse:GridList Margin="0,10,0,0" ItemSource="{Binding Orders}" CellSpacing="15" CellWidth="250" CellHeight="250">
-		  <reuse:GridList.DataTemplate>
-			  <DataTemplate DataType="vm:OrderViewModel">
-					<views:OrderView DataContext="{Binding}"/>
-			  </DataTemplate>
-		  </reuse:GridList.DataTemplate>
-	  </reuse:GridList>
-  </StackPanel>
+			 x:DataType="vm:OrdersViewModel"
+			 x:CompileBindings="False">
+	<Grid>
+		<Grid IsVisible="{Binding IsDishOrdersVisible}">
+			<dishes:OrderDishesView DataContext="{Binding OrderDishesViewModel}" />
+		</Grid>
+		<Grid IsVisible="{Binding IsOrdersVisible}">
+			<Grid.RowDefinitions>
+				<RowDefinition Height="*"/>
+				<RowDefinition Height="0.3*"/>
+			</Grid.RowDefinitions>
+			<DataGrid Grid.Row="0"
+				ItemsSource="{Binding Entities}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
+
+					<DataGridTemplateColumn Header="Show dishes">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button Command="{Binding ShowDishesCommand}" Content="Show dishes"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTemplateColumn Header="Delete">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<Button Command="{Binding DeleteEntityCommand}" Content="Delete"/>
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+				</DataGrid.Columns>
+			</DataGrid>
+			<Button Grid.Row="1" Command="{Binding AddEntityCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
+		</Grid>
+	</Grid>
 </UserControl>

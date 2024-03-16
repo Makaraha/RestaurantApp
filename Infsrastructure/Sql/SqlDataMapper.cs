@@ -47,6 +47,8 @@ namespace Infrastructure.Sql
                 return reader.GetFloat(i);
             else if (property.PropertyType == typeof(string))
                 return reader.GetString(i);
+            else if (property.PropertyType == typeof(DateTime))
+                return reader.GetDateTime(i);
             else
                 throw new Exception($"Unknown property type: {property.PropertyType.Name}");
         }

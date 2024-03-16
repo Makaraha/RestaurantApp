@@ -1,0 +1,33 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="350" d:DesignHeight="350"
+		Title="Error"
+		MinWidth="300"
+		MaxWidth="800"
+		Width="700"
+		MinHeight="300"
+		MaxHeight="700"
+		SizeToContent="Height"
+        x:Class="AvaloniaApplication.Views.Popups.ExceptionPopup"
+		x:CompileBindings="False">
+	<Grid Margin="10" VerticalAlignment="Stretch">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="0.1*"/>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"/>
+		</Grid.ColumnDefinitions>
+		<ScrollViewer Grid.Row="0">
+			<StackPanel>
+				<TextBlock FontSize="24" TextAlignment="Center" Text="Exception occured"/>
+				<TextBlock TextWrapping="Wrap" x:Name="Description"/>
+			</StackPanel>
+		</ScrollViewer>
+		<StackPanel HorizontalAlignment="Center" Margin="10" Grid.Row="1">
+			<Button x:Name="CloseButton" Content="Close"/>
+		</StackPanel>
+	</Grid>
+</Window>

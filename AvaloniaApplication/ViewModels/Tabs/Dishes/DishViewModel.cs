@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
 using AvaloniaApplication.ViewModels.BaseViewModels;
-using AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients;
 using AvaloniaApplication.ViewModels.Tabs.DishTypes;
 using Domain;
 using Domain.Services;

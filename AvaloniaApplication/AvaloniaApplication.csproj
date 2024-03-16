@@ -52,8 +52,5 @@
     <Compile Update="Views\Tabs\Dishes\DishesView.axaml.cs">
       <DependentUpon>DishesView.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Tabs\Orders\OrderView.axaml.cs">
-      <DependentUpon>OrderView.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>

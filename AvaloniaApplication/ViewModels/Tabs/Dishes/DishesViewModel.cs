@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Input;
 using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients;
 using AvaloniaApplication.ViewModels.Tabs.DishTypes;
 using AvaloniaApplication.ViewModels.Tabs.Products;
-using AvaloniaApplication.Views.Tabs.Dishes;
 using Domain;
-using Domain.Interfaces;
 using Domain.Services;
 using DynamicData;
 using ReactiveUI;
