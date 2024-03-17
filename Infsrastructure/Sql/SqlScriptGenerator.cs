@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Globalization;
+using System.Reflection;
 using Domain.Attributes;
 
 namespace Infrastructure.Sql
@@ -51,7 +52,7 @@ namespace Infrastructure.Sql
             var primaryKey = fields.First(x => x.IsPrimaryKey);
             var dataFields = fields.Where(x => !x.IsPrimaryKey);
 
-            var setStatement = string.Join(',', dataFields.Select(x => $"{x.Name} = '{x.Value}'"));
+            var setStatement = string.Join(',', dataFields.Select(x => $"{x.Name} = '{ValueToString(x.Value)}'"));
             return $"UPDATE {tableName} SET {setStatement} WHERE {primaryKey.Name} = '{primaryKey.Value}'";
         }
 
@@ -90,6 +91,12 @@ namespace Infrastructure.Sql
             {
                 case DateTime _dateTime:
                     return _dateTime.ToString("yyyy-MM-dd HH:mm:ss");
+
+                case float _float:
+                    return _float.ToString(CultureInfo.InvariantCulture);
+
+                case decimal _decimal:
+                    return _decimal.ToString(CultureInfo.InvariantCulture);
 
                 default:
                     return value.ToString() ?? "NULL";

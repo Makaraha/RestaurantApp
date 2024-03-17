@@ -9,6 +9,8 @@ namespace Domain
         [PrimaryKey]
         public int Id { get; set; }
 
+        public float Amount { get; set; }
+
         public int DishId { get; set; }
 
         public int OrderId { get; set; }

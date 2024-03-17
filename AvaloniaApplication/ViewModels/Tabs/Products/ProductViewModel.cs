@@ -32,6 +32,18 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
             }
         }
 
+        public decimal Cost
+        {
+            get => _entity.Cost;
+            set
+            {
+                if(_entity.Cost == value) 
+                    return;
+
+                UpdateEntity(_entity with { Cost = value });
+            }
+        }
+
         public ObservableCollection<MeasurementUnitViewModel> AvailableMeasurementUnits => _measurementUnitsViewModel.Entities;
 
         public MeasurementUnitViewModel? MeasurementUnit
@@ -51,6 +63,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
             this.RaisePropertyChanged(nameof(Id));
             this.RaisePropertyChanged(nameof(Name));
             this.RaisePropertyChanged(nameof(MeasurementUnit));
+            this.RaisePropertyChanged(nameof(Cost));
         }
     }
 }

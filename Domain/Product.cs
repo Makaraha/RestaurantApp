@@ -10,6 +10,8 @@ namespace Domain
 
         public string Name { get; set; }
 
+        public decimal Cost { get; set; }
+
         public int MeasurementUnitId { get; set; }
     }
 }

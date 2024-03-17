@@ -88,7 +88,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
 
         protected override DishViewModel CreateEntityViewModel(Dish entity)
         {
-            return new DishViewModel(entity, _dishTypesViewModel, _repository, ShowIngredients);
+            return new DishViewModel(entity, _dishTypesViewModel, this, _repository, ShowIngredients);
         }
 
         protected override Dish CreateNewEntity()

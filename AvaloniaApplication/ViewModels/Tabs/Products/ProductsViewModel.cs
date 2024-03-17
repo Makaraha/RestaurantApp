@@ -38,7 +38,8 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
             return new Product()
             {
                 Name = $"Product {Entities.Count + 1}",
-                MeasurementUnitId = _measurementUnitsViewModel.Entities.First().Id
+                MeasurementUnitId = _measurementUnitsViewModel.Entities.First().Id,
+                Cost = 0
             };
         }
     }

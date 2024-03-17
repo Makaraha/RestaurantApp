@@ -28,8 +28,8 @@
 							</ComboBox>
 						</DataTemplate>
 					</DataGridTemplateColumn.CellTemplate>
-					
 				</DataGridTemplateColumn>
+				<DataGridTextColumn Header="Cost" Binding="{Binding Cost}" Width="*" />
 				<DataGridTemplateColumn Header="Delete">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>

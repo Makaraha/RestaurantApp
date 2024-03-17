@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.Dishes;
-using AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients;
 using AvaloniaApplication.ViewModels.Tabs.Orders.Dishes;
 using Domain;
 using Domain.Services;
@@ -96,7 +95,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
 
         private void ShowDishOrders(OrderViewModel order)
         {
-            OrderDishesViewModel = new DishOrdersViewModel(_dishesViewModel, order, _dishOrdersRepository, _dishOrders.Where(x => x.DishId == order.Id), ShowDishes);
+            OrderDishesViewModel = new DishOrdersViewModel(_dishesViewModel, order, _dishOrdersRepository, _dishOrders.Where(x => x.OrderId == order.Id), ShowDishes);
             OrderDishesViewModel.OnDeleted += (viewModel) => _dishOrders.RemoveMany(_dishOrders.Where(x => x.Id == viewModel.Id));
             OrderDishesViewModel.OnInserted += (entity) => _dishOrders.Add(entity);
 

@@ -13,8 +13,10 @@ GO
 CREATE TABLE Products(
 	Id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
 	Name NVARCHAR(100) NOT NULL,
+	Cost MONEY NOT NULL,
 	MeasurementUnitId INT FOREIGN KEY REFERENCES MeasurementUnits(Id) NOT NULL,
-	CONSTRAINT UX_MeasurementUnitId_Name UNIQUE(Name, MeasurementUnitId))
+	CONSTRAINT UX_MeasurementUnitId_Name UNIQUE(Name, MeasurementUnitId),
+	CONSTRAINT CK_Cost_Not_Negative CHECK(Cost >= 0))
 
 GO
 
@@ -26,12 +28,12 @@ CREATE TABLE Dishes(
 
 GO
 
-CREATE TABLE Ingredient(
+CREATE TABLE Ingredients(
 	Id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
-	DishId INT FOREIGN KEY REFERENCES Dishes(Id) NOT NULL,
+	DishId INT FOREIGN KEY REFERENCES Dishes(Id) ON DELETE CASCADE NOT NULL,
 	ProductId INT FOREIGN KEY REFERENCES Products(Id) NOT NULL,
 	Amount REAL NOT NULL,
-	CONSTRAINT CK_Amount_Not_Negative CHECK (Amount >= 0),
+	CONSTRAINT CK_Ingredient_Amount_Not_Negative CHECK (Amount > 0),
 	CONSTRAINT UX_DishId_ProductId UNIQUE(DishId, ProductId))
 
 GO
@@ -45,4 +47,7 @@ GO
 CREATE TABLE DishesOrders(
 	Id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
 	DishId INT FOREIGN KEY REFERENCES Dishes(Id) NOT NULL,
-	OrderId INT FOREIGN KEY REFERENCES Orders(Id) NOT NULL)
+	OrderId INT FOREIGN KEY REFERENCES Orders(Id) ON DELETE CASCADE NOT NULL,
+	Amount REAL NOT NULL,
+	CONSTRAINT CK_DishOrder_Amount_Not_Negative CHECK (Amount > 0),
+	CONSTRAINT UX_DishId_OrderId UNIQUE(DishId, OrderId))

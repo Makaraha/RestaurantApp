@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -13,13 +14,16 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
     public class DishViewModel : BaseEntityViewModel<Dish>
     {
         private DishTypesViewModel _dishTypesViewModel;
+        private DishesViewModel _dishesViewModel;
 
         public DishViewModel(Dish dish, 
             DishTypesViewModel dishTypesViewModel, 
+            DishesViewModel dishesViewModel,
             IRepository<Dish> repository,
             Action<DishViewModel> showIngredientsAction) : base(dish, repository)
         {
             _dishTypesViewModel = dishTypesViewModel;
+            _dishesViewModel = dishesViewModel;
 
             ShowIngredientsCommand = ReactiveCommand.Create(() => showIngredientsAction(this));
         }
@@ -37,11 +41,16 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
             }
         }
 
-        public ObservableCollection<DishTypeViewModel> AvailableDishTypes => _dishTypesViewModel.Entities;
+        public ObservableCollection<DishTypeViewModel> AvailableDishTypes => new ObservableCollection<DishTypeViewModel>(
+            _dishTypesViewModel.Entities
+            .Where(dt => !_dishesViewModel.Entities.Any(d => d.Name == Name && d.DishTypeId == dt.Id))
+            .Append(DishType));
 
-        public DishTypeViewModel? DishType
+        public int DishTypeId => _entity.DishTypeId;
+
+        public DishTypeViewModel DishType
         {
-            get => AvailableDishTypes.FirstOrDefault(x => x.Id == _entity.DishTypeId);
+            get => _dishTypesViewModel.Entities.First(x => x.Id == _entity.DishTypeId);
             set
             {
                 if (value == null || value.Id == _entity.DishTypeId)
@@ -55,6 +64,11 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
         {
             this.RaisePropertyChanged(nameof(Name));
             this.RaisePropertyChanged(nameof(DishType));
+            
+            foreach(var dish in _dishesViewModel.Entities.Where(x => x.Name == Name))
+            {
+                dish.RaisePropertyChanged(nameof(AvailableDishTypes));
+            }
         }
     }
 }
