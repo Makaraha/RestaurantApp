@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AvaloniaApplication.Views.Popups;
 using Domain.Interfaces;
 using Domain.Services;
+using Mapster;
 using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.BaseViewModels
@@ -26,12 +26,15 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
 
         public event Action? OnDeleted;
 
+        public event Action<T>? OnUpdated;
+
         protected virtual async void UpdateEntity(T entity)
         {
             try
             {
                 await _repository.UpdateAsync(entity);
-                _entity = entity;
+                entity.Adapt(_entity);
+                OnUpdated?.Invoke(entity);
             }
             catch(Exception ex)
             {

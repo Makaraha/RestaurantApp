@@ -11,6 +11,8 @@ namespace Domain
 
         public string Name { get; set; }    
 
+        public decimal ExtraCharge { get; set; }
+
         public int DishTypeId { get; set; }
     }
 }

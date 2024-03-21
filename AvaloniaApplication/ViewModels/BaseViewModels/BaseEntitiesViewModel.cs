@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients;
 using Domain.Interfaces;
 using Domain.Services;
 using DynamicData;
@@ -53,6 +52,7 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
                 var entity = await _repository.AddAsync(CreateNewEntity());
                 Entities.Add(CreateSubscribedEntityViewModel(entity));
                 OnInserted?.Invoke(entity);
+                RaiseUpdate();
             }
             catch(Exception ex)
             {
@@ -71,8 +71,14 @@ namespace AvaloniaApplication.ViewModels.BaseViewModels
             {
                 Entities.Remove(viewModel);
                 OnDeleted?.Invoke(viewModel);
+                RaiseUpdate();
             };
             return viewModel;
+        }
+
+        public virtual void RaiseUpdate()
+        {
+
         }
     }
 }

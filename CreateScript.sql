@@ -23,8 +23,10 @@ GO
 CREATE TABLE Dishes(
 	Id INT PRIMARY KEY IDENTITY(1, 1) NOT NULL,
 	DishTypeId INT FOREIGN KEY REFERENCES DishTypes(Id) NOT NULL,
+	ExtraCharge MONEY NOT NULL,
 	Name NVARCHAR(100) NOT NULL,
-	CONSTRAINT UX_DishTypeId_Name UNIQUE(DishTypeId, Name))
+	CONSTRAINT UX_DishTypeId_Name UNIQUE(DishTypeId, Name),
+	CONSTRAINT CK_Extra_Charge_Not_Negative CHECK(ExtraCharge >= 0))
 
 GO
 

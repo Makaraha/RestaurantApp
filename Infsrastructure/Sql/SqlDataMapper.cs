@@ -44,9 +44,9 @@ namespace Infrastructure.Sql
             if (property.PropertyType == typeof(int))
                 return reader.GetInt32(i);
             else if(property.PropertyType == typeof(float))
-                return reader.GetFloat(i);
+                return (float)Math.Round(reader.GetFloat(i), 2);
             else if(property.PropertyType == typeof(decimal))
-                return reader.GetDecimal(i);
+                return Math.Round(reader.GetDecimal(i), 2);
             else if (property.PropertyType == typeof(string))
                 return reader.GetString(i);
             else if (property.PropertyType == typeof(DateTime))

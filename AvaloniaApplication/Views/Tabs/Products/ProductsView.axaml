@@ -15,7 +15,7 @@
 			ItemsSource="{Binding Entities}">
 			<DataGrid.Columns>
 				<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
-				<DataGridTemplateColumn Header="MeasurementUnit" Width="0.5*">
+				<DataGridTemplateColumn Header="MeasurementUnit" Width="*">
 					<DataGridTemplateColumn.CellTemplate>
 						<DataTemplate>
 							<ComboBox ItemsSource="{Binding AvailableMeasurementUnits}" 

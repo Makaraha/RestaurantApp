@@ -93,10 +93,10 @@ namespace Infrastructure.Sql
                     return _dateTime.ToString("yyyy-MM-dd HH:mm:ss");
 
                 case float _float:
-                    return _float.ToString(CultureInfo.InvariantCulture);
+                    return _float.ToString("#.##", CultureInfo.InvariantCulture);
 
                 case decimal _decimal:
-                    return _decimal.ToString(CultureInfo.InvariantCulture);
+                    return _decimal.ToString("#.##", CultureInfo.InvariantCulture);
 
                 default:
                     return value.ToString() ?? "NULL";

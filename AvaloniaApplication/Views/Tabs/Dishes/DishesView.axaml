@@ -36,6 +36,10 @@
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
 
+					<DataGridTextColumn Header="Extra charge" Binding="{Binding ExtraCharge}" Width="*" />
+					<DataGridTextColumn Header="Prime cost" Binding="{Binding PrimeCost}" Width="*" />
+					<DataGridTextColumn Header="Total cost" Binding="{Binding TotalCost}" Width="*" />
+
 					<DataGridTemplateColumn Header="Show ingredients">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>

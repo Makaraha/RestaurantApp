@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Avalonia.Controls;
 using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.Dishes;
 using AvaloniaApplication.ViewModels.Tabs.Orders.Dishes;
@@ -75,6 +76,8 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
 
         protected override async void Initialize()
         {
+            await _dishesViewModel.WaitForInitializationAsync();
+
             _dishOrders = await _dishOrdersRepository.ListAsync();
 
             base.Initialize();
@@ -82,7 +85,11 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
 
         protected override OrderViewModel CreateEntityViewModel(Order entity)
         {
-            return new OrderViewModel(entity, _repository, ShowDishOrders);
+            var orderDishesViewModel = new DishOrdersViewModel(_dishesViewModel, this, entity, _dishOrdersRepository);
+            orderDishesViewModel.OnDeleted += (viewModel) => _dishOrders.RemoveMany(_dishOrders.Where(x => x.Id == viewModel.Id));
+            orderDishesViewModel.OnInserted += (entity) => _dishOrders.Add(entity);
+
+            return new OrderViewModel(entity, _repository, orderDishesViewModel, this);
         }
 
         protected override Order CreateNewEntity() 
@@ -93,17 +100,20 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
             };
         }
 
-        private void ShowDishOrders(OrderViewModel order)
+        public IEnumerable<DishOrder> GetDishOrders(int orderId)
         {
-            OrderDishesViewModel = new DishOrdersViewModel(_dishesViewModel, order, _dishOrdersRepository, _dishOrders.Where(x => x.OrderId == order.Id), ShowDishes);
-            OrderDishesViewModel.OnDeleted += (viewModel) => _dishOrders.RemoveMany(_dishOrders.Where(x => x.Id == viewModel.Id));
-            OrderDishesViewModel.OnInserted += (entity) => _dishOrders.Add(entity);
+            return _dishOrders.Where(x => x.OrderId == orderId);
+        }
+
+        public void ShowDishOrders(DishOrdersViewModel viewModel)
+        {
+            OrderDishesViewModel = viewModel;
 
             IsDishOrdersVisible = true;
             IsOrdersVisible = false;
         }
 
-        private void ShowDishes()
+        public void ShowOrders()
         {
             IsOrdersVisible = true;
             IsDishOrdersVisible = false;

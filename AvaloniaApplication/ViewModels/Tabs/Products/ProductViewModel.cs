@@ -46,9 +46,9 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
 
         public ObservableCollection<MeasurementUnitViewModel> AvailableMeasurementUnits => _measurementUnitsViewModel.Entities;
 
-        public MeasurementUnitViewModel? MeasurementUnit
+        public MeasurementUnitViewModel MeasurementUnit
         {
-            get => AvailableMeasurementUnits.FirstOrDefault(x => x.Id == _entity.MeasurementUnitId);
+            get => AvailableMeasurementUnits.First(x => x.Id == _entity.MeasurementUnitId);
             set
             {
                 if (value == null || _entity.MeasurementUnitId == value.Id)

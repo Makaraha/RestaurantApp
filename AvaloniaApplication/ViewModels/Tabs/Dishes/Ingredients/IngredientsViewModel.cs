@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Input;
@@ -13,17 +12,17 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients
 {
     public class IngredientsViewModel : BaseEntitiesViewModel<Ingredient, IngredientViewModel>
     {
+        private DishesViewModel _dishesViewModel;
         private ProductsViewModel _products;
-        private DishViewModel _dish;
+        private Dish _dish;
 
-        public IngredientsViewModel(ProductsViewModel products, DishViewModel dish, IRepository<Ingredient> repository, IEnumerable<Ingredient> ingredients,
-            Action showDishesAction) : base(repository)
+        public IngredientsViewModel(ProductsViewModel products, Dish dish, IRepository<Ingredient> repository, DishesViewModel dishesViewModel) : base(repository)
         {
             _products = products;
+            _dishesViewModel = dishesViewModel;
             _dish = dish;
-            Entities = new ObservableCollection<IngredientViewModel>(ingredients.Select(CreateSubscribedEntityViewModel));
 
-            BackCommand = ReactiveCommand.Create(showDishesAction);
+            BackCommand = ReactiveCommand.Create(dishesViewModel.ShowDishes);
             Title = $"Ingredients of '{dish.Name}'";
 
             Initialize();
@@ -33,16 +32,22 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients
 
         public ICommand BackCommand { get; }
 
+        public decimal PrimeCost => Entities.Any() ? Entities.Sum(x => x.ProductTotalCost) : 0;
+
+        public string PrimeCostText => $"Prime cost: {PrimeCost}";
+
         protected override async void Initialize()
         {
             await _products.WaitForInitializationAsync();
+
+            Entities = new ObservableCollection<IngredientViewModel>(_dishesViewModel.GetIngredients(_dish.Id).Select(CreateSubscribedEntityViewModel));
 
             _initializationTcs.SetResult();
         }
 
         protected override IngredientViewModel CreateEntityViewModel(Ingredient entity)
         {
-            return new IngredientViewModel(entity, _products, _repository);
+            return new IngredientViewModel(entity, this, _products, _repository);
         }
 
         protected override Ingredient CreateNewEntity()
@@ -53,6 +58,13 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients
                 throw new Exception("Impossible to create new ingredient");
 
             return new Ingredient() { ProductId = product.Id, DishId = _dish.Id, Amount = 1 };
+        }
+
+        public override void RaiseUpdate()
+        {
+            this.RaisePropertyChanged(nameof(PrimeCostText));
+
+            _dishesViewModel.Entities.First(x => x.Id == _dish.Id).RaisePropertyChanged(nameof(DishViewModel.PrimeCost));
         }
     }
 }

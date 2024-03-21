@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.Products;
@@ -12,19 +11,23 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients
     public class IngredientViewModel : BaseEntityViewModel<Ingredient>
     {
         private ProductsViewModel _products;
+        private IngredientsViewModel _ingredients;
 
-        public IngredientViewModel(Ingredient entity, ProductsViewModel products, IRepository<Ingredient> repository) : base(entity, repository)
+        public IngredientViewModel(Ingredient entity, IngredientsViewModel ingreidentsViewModel, ProductsViewModel products, IRepository<Ingredient> repository) : base(entity, repository)
         {
             _products = products;
+            _ingredients = ingreidentsViewModel;
         }
 
-        public ObservableCollection<ProductViewModel> AvailableProducts => _products.Entities;
+        public ObservableCollection<ProductViewModel> AvailableProducts =>
+            new ObservableCollection<ProductViewModel>(
+            _products.Entities.Except(_ingredients.Entities.Select(x => x.Product)).Append(Product));
 
         public int Id => _entity.Id;
 
-        public ProductViewModel? Product
+        public ProductViewModel Product
         {
-            get => AvailableProducts.FirstOrDefault(x => x.Id == _entity.ProductId);
+            get => _products.Entities.First(x => x.Id == _entity.ProductId);
             set
             {
                 if (value == null || _entity.ProductId == value.Id)
@@ -34,14 +37,18 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients
             }
         }
 
-        public string? ProductMeasurementUnit => Product?.MeasurementUnit?.Name;
+        public decimal ProductCost => Product.Cost;
+
+        public string ProductMeasurementUnit => Product.MeasurementUnit.Name;
+
+        public decimal ProductTotalCost => ProductCost * (decimal)Amount;
 
         public float Amount
         {
             get => _entity.Amount;
             set
             {
-                if (_entity.Amount != value)
+                if (_entity.Amount == value)
                     return;
 
                 UpdateEntity(_entity with { Amount = value });
@@ -52,6 +59,14 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes.Ingredients
         {
             this.RaisePropertyChanged(nameof(Product));
             this.RaisePropertyChanged(nameof(ProductMeasurementUnit));
+            this.RaisePropertyChanged(nameof(ProductCost));
+            this.RaisePropertyChanged(nameof(Amount));
+            this.RaisePropertyChanged(nameof(ProductTotalCost));
+
+            foreach (var ingreident in _ingredients.Entities)
+                ingreident.RaisePropertyChanged(nameof(AvailableProducts));
+
+            _ingredients.RaisePropertyChanged(nameof(_ingredients.PrimeCostText));
         }
     }
 }

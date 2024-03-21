@@ -25,6 +25,24 @@
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
 
+					<DataGridTemplateColumn Header="Date" Width="*">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<DatePicker SelectedDate="{Binding OrderData}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+
+					<DataGridTemplateColumn Header="Time" Width="*">
+						<DataGridTemplateColumn.CellTemplate>
+							<DataTemplate>
+								<TimePicker SelectedTime="{Binding OrderTime}" />
+							</DataTemplate>
+						</DataGridTemplateColumn.CellTemplate>
+					</DataGridTemplateColumn>
+					
+					<DataGridTextColumn Header="Cost" Binding="{Binding Cost}" Width="*" />
+
 					<DataGridTemplateColumn Header="Show dishes">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>
@@ -32,7 +50,7 @@
 							</DataTemplate>
 						</DataGridTemplateColumn.CellTemplate>
 					</DataGridTemplateColumn>
-
+					
 					<DataGridTemplateColumn Header="Delete">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>

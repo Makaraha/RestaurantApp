@@ -88,7 +88,11 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
 
         protected override DishViewModel CreateEntityViewModel(Dish entity)
         {
-            return new DishViewModel(entity, _dishTypesViewModel, this, _repository, ShowIngredients);
+            var ingredientsViewModel = new IngredientsViewModel(_productsViewModel, entity, _ingredientsRepository, this);
+            ingredientsViewModel.OnDeleted += (viewModel) => _ingredients.RemoveMany(_ingredients.Where(x => x.Id == viewModel.Id));
+            ingredientsViewModel.OnInserted += (entity) => _ingredients.Add(entity);
+
+            return new DishViewModel(entity, _dishTypesViewModel, this, ingredientsViewModel, _repository);
         }
 
         protected override Dish CreateNewEntity()
@@ -103,17 +107,20 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
             };
         }
 
-        private void ShowIngredients(DishViewModel dish)
+        public IEnumerable<Ingredient> GetIngredients(int dishId)
         {
-            IngredientsViewModel = new IngredientsViewModel(_productsViewModel, dish, _ingredientsRepository, _ingredients.Where(x => x.DishId == dish.Id), ShowDishes);
-            IngredientsViewModel.OnDeleted += (viewModel) => _ingredients.RemoveMany(_ingredients.Where(x => x.Id == viewModel.Id));
-            IngredientsViewModel.OnInserted += (entity) => _ingredients.Add(entity);
-            
+            return _ingredients.Where(x => x.DishId == dishId);
+        }
+
+        public void ShowIngredients(IngredientsViewModel viewModel)
+        {
+            IngredientsViewModel = viewModel;
+
             IsIngredientsVisible = true;
             IsDishesVisible = false;
         }
 
-        private void ShowDishes()
+        public void ShowDishes()
         {
             IsDishesVisible = true;
             IsIngredientsVisible = false;
