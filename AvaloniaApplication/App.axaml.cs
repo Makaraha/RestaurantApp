@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Reflection;
-using Application;
-using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using AvaloniaApplication.Views;
@@ -23,7 +21,6 @@ public partial class App : Avalonia.Application
 
         builder.Configuration.AddJsonFile("appsettings.json");
 
-        builder.Services.AddMediatRCommands();
         builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(Assembly.GetExecutingAssembly()));
         
         builder.Services.AddRepositories(builder.Configuration);

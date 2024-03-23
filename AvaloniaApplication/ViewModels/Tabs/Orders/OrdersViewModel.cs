@@ -1,13 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Avalonia.Controls;
+using System.Windows.Input;
 using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.Dishes;
 using AvaloniaApplication.ViewModels.Tabs.Orders.Dishes;
+using AvaloniaApplication.Views;
+using AvaloniaApplication.Views.Popups;
 using Domain;
 using Domain.Services;
 using DynamicData;
+using Infrastructure.Services;
 using ReactiveUI;
 
 namespace AvaloniaApplication.ViewModels.Tabs.Orders
@@ -32,8 +35,12 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
             IsDishOrdersVisible = false;
             IsOrdersVisible = true;
 
+            ReportCommand = ReactiveCommand.Create(ShowReportPopup);
+
             Initialize();
         }
+
+        public ICommand ReportCommand { get; private set; }
 
         public bool IsOrdersVisible
         {
@@ -117,6 +124,12 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
         {
             IsOrdersVisible = true;
             IsDishOrdersVisible = false;
+        }
+
+        private void ShowReportPopup()
+        {
+            var popup = new PrintReportPopup(this, new ReportService());
+            popup.ShowDialog(MainWindow.Instance);
         }
     }
 }

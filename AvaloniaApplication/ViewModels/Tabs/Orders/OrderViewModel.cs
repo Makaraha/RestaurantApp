@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Input;
 using AvaloniaApplication.ViewModels.BaseViewModels;
@@ -31,6 +32,8 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
         public string Name => $"Order #{_entity.Id}";
 
         public decimal Cost => _dishOrders.Entities.Any() ? _dishOrders.Entities.Sum(x => x.TotalCost) : 0;
+
+        public IEnumerable<DishOrderViewModel> Dishes => _dishOrders.Entities;
 
         public DateTimeOffset OrderData
         {

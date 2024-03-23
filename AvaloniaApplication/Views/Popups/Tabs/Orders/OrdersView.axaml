@@ -17,15 +17,17 @@
 		</Grid>
 		<Grid IsVisible="{Binding IsOrdersVisible}">
 			<Grid.RowDefinitions>
+				<RowDefinition Height="0.1*"/>
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="0.3*"/>
 			</Grid.RowDefinitions>
-			<DataGrid Grid.Row="0"
+			<Button Grid.Row="0" Command="{Binding ReportCommand}" Content="Report"/>
+			<DataGrid Grid.Row="1"
 				ItemsSource="{Binding Entities}">
 				<DataGrid.Columns>
 					<DataGridTextColumn Header="Name" Binding="{Binding Name}" Width="*" />
 
-					<DataGridTemplateColumn Header="Date" Width="*">
+					<DataGridTemplateColumn SortMemberPath="OrderData" Header="Date" Width="*">
 						<DataGridTemplateColumn.CellTemplate>
 							<DataTemplate>
 								<DatePicker SelectedDate="{Binding OrderData}" />
@@ -60,7 +62,7 @@
 					</DataGridTemplateColumn>
 				</DataGrid.Columns>
 			</DataGrid>
-			<Button Grid.Row="1" Command="{Binding AddEntityCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
+			<Button Grid.Row="2" Command="{Binding AddEntityCommand}" HorizontalAlignment="Center" Margin="0,20,0,0">Add new</Button>
 		</Grid>
 	</Grid>
 </UserControl>

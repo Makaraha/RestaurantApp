@@ -11,25 +11,25 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication.Views.MainView"
 			 x:DataType="vm:MainViewModel">
-	<TabControl>
-		<TabItem x:Name="OrdersTab" Header="Orders">
-			<orders:OrdersView DataContext="{Binding OrdersViewModel}" />
-		</TabItem>
+		<TabControl>
+			<TabItem x:Name="OrdersTab" Header="Orders">
+				<orders:OrdersView DataContext="{Binding OrdersViewModel}" />
+			</TabItem>
 
-		<TabItem Header="Dishes">
-			<dishes:DishesView DataContext="{Binding DishesViewModel}" />
-		</TabItem>
+			<TabItem Header="Dishes">
+				<dishes:DishesView DataContext="{Binding DishesViewModel}" />
+			</TabItem>
 
-		<TabItem Header="DishTypes">
-			<dishTypes:DishTypesView DataContext="{Binding DishTypesViewModel}"/>
-		</TabItem>
+			<TabItem Header="DishTypes">
+				<dishTypes:DishTypesView DataContext="{Binding DishTypesViewModel}"/>
+			</TabItem>
 
-		<TabItem Header="Products">
-			<products:ProductsView DataContext="{Binding ProductsViewModel}" />
-		</TabItem>
+			<TabItem Header="Products">
+				<products:ProductsView DataContext="{Binding ProductsViewModel}" />
+			</TabItem>
 
-		<TabItem Header="Measurement units">
-			<mesUnits:MeasurementUnitsView DataContext="{Binding MeasurementUnitsViewModel}" />
-		</TabItem>
-	</TabControl>
+			<TabItem Header="Measurement units">
+				<mesUnits:MeasurementUnitsView DataContext="{Binding MeasurementUnitsViewModel}" />
+			</TabItem>
+		</TabControl>
 </UserControl>

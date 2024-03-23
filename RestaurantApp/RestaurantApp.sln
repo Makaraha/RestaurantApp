@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "..\Domain\Domain.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "..\Infsrastructure\Infrastructure.csproj", "{5A1F364E-9F10-4A3C-9A19-0D2DD6D604F0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "..\Application\Application.csproj", "{8FA81087-470E-4AEE-BCEF-447B1522EAE6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaApplication", "..\AvaloniaApplication\AvaloniaApplication.csproj", "{5F057BBA-FB93-4CF2-9ACE-D91E87E46582}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaApplication.Desktop", "..\AvaloniaApplication.Desktop\AvaloniaApplication.Desktop.csproj", "{4D02CA57-329F-48E1-9C62-CE3A77852D03}"
@@ -35,10 +33,6 @@ Global
 		{5A1F364E-9F10-4A3C-9A19-0D2DD6D604F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5A1F364E-9F10-4A3C-9A19-0D2DD6D604F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5A1F364E-9F10-4A3C-9A19-0D2DD6D604F0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8FA81087-470E-4AEE-BCEF-447B1522EAE6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8FA81087-470E-4AEE-BCEF-447B1522EAE6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8FA81087-470E-4AEE-BCEF-447B1522EAE6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8FA81087-470E-4AEE-BCEF-447B1522EAE6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5F057BBA-FB93-4CF2-9ACE-D91E87E46582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5F057BBA-FB93-4CF2-9ACE-D91E87E46582}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F057BBA-FB93-4CF2-9ACE-D91E87E46582}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -33,6 +33,7 @@
     <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.1.0" />
@@ -41,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application\Application.csproj" />
     <ProjectReference Include="..\Domain\Domain.csproj" />
     <ProjectReference Include="..\Infsrastructure\Infrastructure.csproj" />
   </ItemGroup>
@@ -50,7 +50,7 @@
     <Compile Update="Controls\Reusables\GridList.axaml.cs">
       <DependentUpon>GridList.axaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\Tabs\Dishes\DishesView.axaml.cs">
+    <Compile Update="Views\Popups\Tabs\Dishes\DishesView.axaml.cs">
       <DependentUpon>DishesView.axaml</DependentUpon>
     </Compile>
   </ItemGroup>
