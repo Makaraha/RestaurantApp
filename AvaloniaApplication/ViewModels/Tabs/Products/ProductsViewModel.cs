@@ -27,7 +27,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
 
         protected override ProductViewModel CreateEntityViewModel(Product entity)
         {
-            return new ProductViewModel(_repository, entity, _measurementUnitsViewModel);
+            return new ProductViewModel(_repository, entity, this, _measurementUnitsViewModel);
         }
 
         protected override Product CreateNewEntity()

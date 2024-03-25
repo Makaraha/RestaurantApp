@@ -15,7 +15,6 @@ CREATE TABLE Products(
 	Name NVARCHAR(100) NOT NULL,
 	Cost MONEY NOT NULL,
 	MeasurementUnitId INT FOREIGN KEY REFERENCES MeasurementUnits(Id) NOT NULL,
-	CONSTRAINT UX_MeasurementUnitId_Name UNIQUE(Name, MeasurementUnitId),
 	CONSTRAINT CK_Cost_Not_Negative CHECK(Cost >= 0))
 
 GO

@@ -1,21 +1,23 @@
-﻿using AvaloniaApplication.ViewModels.BaseViewModels;
+﻿using System.Collections.ObjectModel;
+using System.Linq;
+using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.MeasurementUnits;
 using Domain;
 using Domain.Services;
 using ReactiveUI;
-using System.Collections.ObjectModel;
-using System.Linq;
 
 namespace AvaloniaApplication.ViewModels.Tabs.Products
 {
     public class ProductViewModel : BaseEntityViewModel<Product>
     {
         private MeasurementUnitsViewModel _measurementUnitsViewModel;
+        private ProductsViewModel _productsViewModel;
 
-        public ProductViewModel(IRepository<Product> repository, Product product, MeasurementUnitsViewModel measurementUnits) 
+        public ProductViewModel(IRepository<Product> repository, Product product, ProductsViewModel productsViewModel, MeasurementUnitsViewModel measurementUnits) 
             : base(product, repository)
         {
             _measurementUnitsViewModel = measurementUnits;
+            _productsViewModel = productsViewModel;
         }
 
         public int Id => _entity.Id;
@@ -46,9 +48,11 @@ namespace AvaloniaApplication.ViewModels.Tabs.Products
 
         public ObservableCollection<MeasurementUnitViewModel> AvailableMeasurementUnits => _measurementUnitsViewModel.Entities;
 
+        public int MeasurementUnitId => _entity.MeasurementUnitId;
+
         public MeasurementUnitViewModel MeasurementUnit
         {
-            get => AvailableMeasurementUnits.First(x => x.Id == _entity.MeasurementUnitId);
+            get => _measurementUnitsViewModel.Entities.First(x => x.Id == _entity.MeasurementUnitId);
             set
             {
                 if (value == null || _entity.MeasurementUnitId == value.Id)

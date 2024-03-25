@@ -21,7 +21,7 @@
 				<RowDefinition Height="*"/>
 				<RowDefinition Height="0.3*"/>
 			</Grid.RowDefinitions>
-			<Button Grid.Row="0" Command="{Binding ReportCommand}" Content="Report"/>
+			<Button Grid.Row="0" IsEnabled="{Binding IsReportButtonEnabled}" Command="{Binding ReportCommand}" Content="Report"/>
 			<DataGrid Grid.Row="1"
 				ItemsSource="{Binding Entities}">
 				<DataGrid.Columns>

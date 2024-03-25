@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Input;
 using Avalonia.Controls;
 using AvaloniaApplication.ViewModels.Tabs.Orders;
 using Infrastructure.Models;
@@ -28,10 +26,12 @@ namespace AvaloniaApplication.Views.Popups
             var entities = _ordersViewModel.Entities.OrderBy(x => x.OrderData).ToList();
 
             InitializeComponent();
+            ReportButton.IsEnabled = false;
 
             Calendar.DisplayDateStart = entities.Min(x => x.OrderData).DateTime;
             Calendar.DisplayDateEnd = entities.Max(x => x.OrderData).DateTime;
             Calendar.IsTodayHighlighted = false;
+            Calendar.SelectedDatesChanged += (_, _) => OnSelectedDatesChanged();
 
             for (int i = 0; i < entities.Count - 1; i++)
             {
@@ -42,6 +42,11 @@ namespace AvaloniaApplication.Views.Popups
             ReportButton.Click += (_, _) => PrintReport();
         }
 
+        private void OnSelectedDatesChanged()
+        {
+            ReportButton.IsEnabled = Calendar.SelectedDates.Any();
+        }
+
         private void PrintReport()
         {
             var orders = _ordersViewModel.Entities.Where(x => Calendar.SelectedDates.Contains(x.OrderData.Date))
@@ -49,6 +54,7 @@ namespace AvaloniaApplication.Views.Popups
                 {
                     Name = x.Name,
                     TotalCost = x.Cost,
+                    Date = x.OrderData.DateTime,
                     Dishes = x.Dishes.Select(d => new DishModel()
                     {
                         Name = d.Dish.Name,
@@ -58,7 +64,7 @@ namespace AvaloniaApplication.Views.Popups
                     }).ToList()
                 });
 
-            var path = _reportService.GeneratePdfReport(orders);
+            var path = _reportService.GeneratePdfReport(orders, Calendar.SelectedDates.Min(), Calendar.SelectedDates.Max());
 
             var process = new Process();
             process.StartInfo = new ProcessStartInfo(path)

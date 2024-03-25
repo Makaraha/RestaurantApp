@@ -44,10 +44,7 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
             }
         }
 
-        public ObservableCollection<DishTypeViewModel> AvailableDishTypes => new ObservableCollection<DishTypeViewModel>(
-            _dishTypesViewModel.Entities
-            .Where(dt => !_dishesViewModel.Entities.Any(d => d.Name == Name && d.DishTypeId == dt.Id))
-            .Append(DishType));
+        public ObservableCollection<DishTypeViewModel> AvailableDishTypes => _dishTypesViewModel.Entities;
 
         public int DishTypeId => _entity.DishTypeId;
 
@@ -86,11 +83,6 @@ namespace AvaloniaApplication.ViewModels.Tabs.Dishes
             this.RaisePropertyChanged(nameof(ExtraCharge));
             this.RaisePropertyChanged(nameof(PrimeCost));
             this.RaisePropertyChanged(nameof(TotalCost));
-            
-            foreach(var dish in _dishesViewModel.Entities.Where(x => x.Name == Name))
-            {
-                dish.RaisePropertyChanged(nameof(AvailableDishTypes));
-            }
         }
     }
 }

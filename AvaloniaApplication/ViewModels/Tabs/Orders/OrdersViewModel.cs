@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using AvaloniaApplication.ViewModels.BaseViewModels;
 using AvaloniaApplication.ViewModels.Tabs.Dishes;
@@ -41,6 +42,8 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
         }
 
         public ICommand ReportCommand { get; private set; }
+
+        public bool IsReportButtonEnabled => Entities.Any();
 
         public bool IsOrdersVisible
         {
@@ -88,6 +91,9 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
             _dishOrders = await _dishOrdersRepository.ListAsync();
 
             base.Initialize();
+
+            await WaitForInitializationAsync();
+            this.RaisePropertyChanged(nameof(IsReportButtonEnabled));
         }
 
         protected override OrderViewModel CreateEntityViewModel(Order entity)
@@ -99,10 +105,16 @@ namespace AvaloniaApplication.ViewModels.Tabs.Orders
             return new OrderViewModel(entity, _repository, orderDishesViewModel, this);
         }
 
+        public override void RaiseUpdate()
+        {
+            this.RaisePropertyChanged(nameof(IsReportButtonEnabled));
+            base.RaiseUpdate();
+        }
+
         protected override Order CreateNewEntity() 
         {
             return new Order()
-            {
+        {
                 OrderTime = DateTime.UtcNow
             };
         }

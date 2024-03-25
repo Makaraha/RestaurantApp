@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Text;
-using Domain;
-using Infrastructure.Models;
+﻿using Infrastructure.Models;
 using Infrastructure.Pdf;
 using Infrastructure.Pdf.Extensions;
 using Infrastructure.Pdf.Models;
@@ -12,7 +9,7 @@ namespace Infrastructure.Services
 {
     public class ReportService
     {
-        public string GeneratePdfReport(IEnumerable<OrderModel> orders)
+        public string GeneratePdfReport(IEnumerable<OrderModel> orders, DateTime startDate, DateTime endDate)
         {
             using var stream = new MemoryStream();
             var doc = new Document();
@@ -22,7 +19,12 @@ namespace Infrastructure.Services
 
             doc.NewPage();
 
-            doc.AddTable(GetTableModel(orders), new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f } );
+            var size = 100 / 6.0f;
+            var sizes = new float[6];
+            Array.Fill(sizes, size);
+
+            doc.AddParagraph($"Report for the period {startDate.Date.ToShortDateString()} - {endDate.Date.ToShortDateString()}", PdfDefaultValues.CenterAligmentParagraphFormat);
+            doc.AddTable(GetTableModel(orders),  sizes);
 
             doc.Close();
             writer.Close();
@@ -40,7 +42,7 @@ namespace Infrastructure.Services
 
         private TableModel GetTableModel(IEnumerable<OrderModel> orders)
         {
-            var tableModel = new TableModel(1, 5)
+            var tableModel = new TableModel(1, 6)
             {
                 Header = "Orders"
             };
@@ -48,10 +50,11 @@ namespace Infrastructure.Services
             var format = PdfDefaultValues.LeftAligmentCellFormat with { Font = PdfDefaultValues.BoldFont };
 
             tableModel[0][0] = new CellModel("Order", format);
-            tableModel[0][1] = new CellModel("Dish", format);
-            tableModel[0][2] = new CellModel("Dish type", format);
-            tableModel[0][3] = new CellModel("Amount", format);
-            tableModel[0][4] = new CellModel("Cost", format);
+            tableModel[0][1] = new CellModel("OrderTime", format);
+            tableModel[0][2] = new CellModel("Dish", format);
+            tableModel[0][3] = new CellModel("Dish type", format);
+            tableModel[0][4] = new CellModel("Amount", format);
+            tableModel[0][5] = new CellModel("Cost", format);
             tableModel.SetRowBackgroundColor(0, BaseColor.GRAY);
 
             FillData(tableModel, orders);
@@ -74,10 +77,10 @@ namespace Infrastructure.Services
             tableModel.AddRow();
             tableModel.LastRow[0] = new CellModel("Total cost")
             {
-                Colspan = 4
+                Colspan = 5
             };
 
-            tableModel.LastRow[4] = new CellModel(orders.Sum(x => x.TotalCost).ToString("#.##"));
+            tableModel.LastRow[5] = new CellModel(orders.Sum(x => x.TotalCost).ToString("0.##"));
             tableModel.SetRowBackgroundColor(tableModel.RowsCount - 1, BaseColor.GRAY);
         }
 
@@ -91,23 +94,27 @@ namespace Infrastructure.Services
                 Rowspan = dishes.Count() + 1
             };
 
+            table.LastRow[1] = new CellModel($"{order.Date.ToShortDateString()} {order.Date.ToShortTimeString()}")
+            {
+                Rowspan = dishes.Count() + 1
+            };
+
             foreach(var dish in dishes)
             {
-                table.LastRow[1] = new CellModel(dish.Name);
-                table.LastRow[2] = new CellModel(dish.Type);
-                table.LastRow[3] = new CellModel(dish.Amount.ToString("#.##"));
-                table.LastRow[4] = new CellModel((dish.Cost * (decimal)dish.Amount).ToString("#.##"));
+                table.LastRow[2] = new CellModel(dish.Name);
+                table.LastRow[3] = new CellModel(dish.Type);
+                table.LastRow[4] = new CellModel(dish.Amount.ToString("0.##"));
+                table.LastRow[5] = new CellModel((dish.Cost * (decimal)dish.Amount).ToString("0.##"));
                 table.SetRowBackgroundColor(table.RowsCount - 1, color);
-
                 table.AddRow();
             }
 
-            table.LastRow[1] = new CellModel("Order cost")
+            table.LastRow[2] = new CellModel("Order cost")
             {
                 Colspan = 3
             };
 
-            table.LastRow[4] = new CellModel(order.TotalCost.ToString());
+            table.LastRow[5] = new CellModel(order.TotalCost.ToString());
             table.SetRowBackgroundColor(table.RowsCount - 1, color);
         }
     }

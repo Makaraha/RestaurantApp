@@ -6,6 +6,8 @@
 
         public List<DishModel> Dishes { get; init; }
 
+        public DateTime Date { get; init; }
+
         public decimal TotalCost { get; init; }
     }
 }
